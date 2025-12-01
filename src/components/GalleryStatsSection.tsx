@@ -1,10 +1,31 @@
 import { Card } from "@/components/ui/card";
+import { useEffect, useRef, useState } from "react";
 import cottageExterior from "@/assets/cottage-exterior.jpg";
 import cottageInterior from "@/assets/cottage-interior.jpg";
 import banyaExterior from "@/assets/banya-exterior.jpg";
 import kamaRiverView from "@/assets/kama-river-view.jpg";
 
 const GalleryStatsSection = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const stats = [
     { number: "12", label: "уютных коттеджей" },
     { number: "50+", label: "гектаров леса" },
@@ -20,11 +41,15 @@ const GalleryStatsSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-background">
+    <section ref={sectionRef} className="py-20 bg-background">
       <div className="container mx-auto px-6 md:px-8">
         {/* Gallery Grid */}
         <div className="mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif text-primary mb-12 text-center">
+          <h2 
+            className={`text-4xl md:text-5xl font-serif text-primary mb-12 text-center transition-all duration-1000 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
             Наша база отдыха
           </h2>
           
@@ -32,8 +57,12 @@ const GalleryStatsSection = () => {
             {images.map((image, index) => (
               <Card
                 key={index}
-                className="overflow-hidden group cursor-pointer transform transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl border-border/50"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ 
+                  transitionDelay: isVisible ? `${index * 150}ms` : '0ms'
+                }}
               >
                 <div className="relative h-80 overflow-hidden">
                   <img
@@ -49,7 +78,12 @@ const GalleryStatsSection = () => {
         </div>
 
         {/* Info Section */}
-        <Card className="bg-card p-10 md:p-16 mb-16 border-border/50">
+        <Card 
+          className={`bg-card p-10 md:p-16 mb-16 border-border/50 transition-all duration-1000 hover:shadow-xl ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+          style={{ transitionDelay: isVisible ? '600ms' : '0ms' }}
+        >
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h3 className="text-3xl md:text-4xl font-serif text-primary mb-6">
               Погрузитесь в атмосферу уединения
@@ -65,7 +99,12 @@ const GalleryStatsSection = () => {
 
         {/* Stats Grid */}
         <div>
-          <h3 className="text-3xl md:text-4xl font-serif text-primary mb-10 text-center">
+          <h3 
+            className={`text-3xl md:text-4xl font-serif text-primary mb-10 text-center transition-all duration-1000 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+            style={{ transitionDelay: isVisible ? '800ms' : '0ms' }}
+          >
             Цифры и факты
           </h3>
           
@@ -73,8 +112,12 @@ const GalleryStatsSection = () => {
             {stats.map((stat, index) => (
               <Card
                 key={index}
-                className="p-8 text-center bg-gradient-to-br from-secondary to-accent border-none transform transition-all duration-500 hover:scale-105 hover:shadow-xl"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className={`p-8 text-center bg-gradient-to-br from-secondary to-accent border-none transform transition-all duration-700 hover:scale-105 hover:shadow-xl ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ 
+                  transitionDelay: isVisible ? `${1000 + index * 100}ms` : '0ms'
+                }}
               >
                 <div className="space-y-3">
                   <div className="text-5xl md:text-6xl font-bold text-primary-foreground">
