@@ -9,6 +9,7 @@ type AccommodationType = "cottages" | "modular" | null;
 const AccommodationSection = () => {
   const [selectedType, setSelectedType] = useState<AccommodationType>(null);
   const [showContent, setShowContent] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const cottageCardRef = useRef<HTMLDivElement>(null);
   const modularCardRef = useRef<HTMLDivElement>(null);
 
@@ -83,9 +84,13 @@ const AccommodationSection = () => {
 
   const handleClose = () => {
     setShowContent(false);
+    setIsClosing(true);
+    
+    // Wait for content to fade out, then collapse card
     setTimeout(() => {
       setSelectedType(null);
-    }, 600);
+      setIsClosing(false);
+    }, 1000); // Total animation time
   };
 
   return (
@@ -105,8 +110,10 @@ const AccommodationSection = () => {
           {/* Cottages Section */}
           <Card 
             ref={cottageCardRef}
-            className={`relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl group ${
-              selectedType === "cottages" ? "invisible" : selectedType ? "opacity-30 pointer-events-none" : "hover:scale-[1.02]"
+            className={`relative overflow-hidden cursor-pointer transition-all duration-700 hover:shadow-2xl group ${
+              selectedType === "cottages" && !isClosing ? "invisible" : 
+              selectedType === "cottages" && isClosing ? "opacity-0" :
+              selectedType ? "opacity-30 pointer-events-none" : "hover:scale-[1.02]"
             }`}
             onClick={() => handleTypeClick("cottages")}
           >
@@ -135,8 +142,10 @@ const AccommodationSection = () => {
           {/* Modular Houses Section */}
           <Card 
             ref={modularCardRef}
-            className={`relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl group ${
-              selectedType === "modular" ? "invisible" : selectedType ? "opacity-30 pointer-events-none" : "hover:scale-[1.02]"
+            className={`relative overflow-hidden cursor-pointer transition-all duration-700 hover:shadow-2xl group ${
+              selectedType === "modular" && !isClosing ? "invisible" : 
+              selectedType === "modular" && isClosing ? "opacity-0" :
+              selectedType ? "opacity-30 pointer-events-none" : "hover:scale-[1.02]"
             }`}
             onClick={() => handleTypeClick("modular")}
           >
@@ -169,7 +178,7 @@ const AccommodationSection = () => {
             {/* Backdrop */}
             <div 
               className={`fixed inset-0 bg-black/70 z-40 transition-opacity duration-700 ${
-                showContent ? "opacity-100" : "opacity-0"
+                showContent && !isClosing ? "opacity-100" : "opacity-0"
               }`}
               onClick={handleClose}
             />
@@ -177,12 +186,12 @@ const AccommodationSection = () => {
             {/* Animated Expanding Card */}
             <div 
               className={`fixed z-50 bg-background rounded-2xl shadow-2xl overflow-hidden
-                ${showContent ? 'accommodation-popup-expanded' : 'accommodation-popup-expanding'}`}
+                ${isClosing ? 'accommodation-popup-collapsing' : showContent ? 'accommodation-popup-expanded' : 'accommodation-popup-expanding'}`}
             >
               {/* Hero Image - Fades out */}
               <div 
                 className={`absolute inset-0 transition-opacity duration-500 ${
-                  showContent ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                  showContent && !isClosing ? 'opacity-0 pointer-events-none' : 'opacity-100'
                 }`}
               >
                 <img
@@ -205,8 +214,8 @@ const AccommodationSection = () => {
 
               {/* Popup Content - Fades in */}
               <div 
-                className={`relative w-full h-full flex flex-col transition-opacity duration-500 ${
-                  showContent ? 'opacity-100 delay-300' : 'opacity-0 pointer-events-none'
+                className={`relative w-full h-full flex flex-col transition-opacity duration-300 ${
+                  showContent && !isClosing ? 'opacity-100' : 'opacity-0 pointer-events-none'
                 }`}
               >
                 {/* Header with Close Button */}
