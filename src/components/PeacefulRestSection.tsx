@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
-import forestWalkImage from "@/assets/hero-winter-forest.jpg";
-import banyaImage from "@/assets/banya-exterior.jpg";
-import riverImage from "@/assets/kama-river-view.jpg";
+import forestWalkImage from "@/assets/peaceful-forest-walk.jpg";
+import windowViewImage from "@/assets/peaceful-window-view.jpg";
+import banyaImage from "@/assets/peaceful-banya.jpg";
 
 const PeacefulRestSection = () => {
   const activities = [
@@ -11,7 +11,7 @@ const PeacefulRestSection = () => {
       description: "Хвойный лес и живописные тропы"
     },
     {
-      image: riverImage,
+      image: windowViewImage,
       title: "Тишина и уединение",
       description: "Отключитесь от городской суеты"
     },
