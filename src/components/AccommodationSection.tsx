@@ -9,7 +9,7 @@ type AccommodationType = "cottages" | "modular" | null;
 const AccommodationSection = () => {
   const [selectedType, setSelectedType] = useState<AccommodationType>(null);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [clickedCard, setClickedCard] = useState<AccommodationType>(null);
+  const [isClosing, setIsClosing] = useState(false);
 
   const cottages = [
     {
@@ -54,29 +54,27 @@ const AccommodationSection = () => {
   ];
 
   const handleTypeClick = (type: AccommodationType) => {
-    if (isAnimating) return;
+    if (isAnimating || selectedType) return;
     
     setIsAnimating(true);
-    setClickedCard(type);
+    setSelectedType(type);
     
-    // Wait for scale animation to complete before showing popup
+    // Wait for animation to complete
     setTimeout(() => {
-      setSelectedType(type);
       setIsAnimating(false);
-    }, 400);
+    }, 600);
   };
 
   const handleClose = () => {
     if (isAnimating) return;
     
-    setIsAnimating(true);
-    setSelectedType(null);
+    setIsClosing(true);
     
-    // Wait for popup to fade out before scaling card back
+    // Wait for closing animation
     setTimeout(() => {
-      setClickedCard(null);
-      setIsAnimating(false);
-    }, 300);
+      setSelectedType(null);
+      setIsClosing(false);
+    }, 600);
   };
 
   return (
@@ -92,12 +90,12 @@ const AccommodationSection = () => {
         </div>
 
         {/* Split Screen Selection */}
-        <div className="grid md:grid-cols-2 gap-4 mb-8">
+        <div className="grid md:grid-cols-2 gap-4 mb-8 relative">
           {/* Cottages Section */}
           <Card 
-            className={`relative overflow-hidden cursor-pointer transition-all duration-500 hover:shadow-2xl group ${
-              clickedCard === "cottages" ? "scale-105 z-10" : ""
-            } ${isAnimating && clickedCard === "cottages" ? "" : "hover:scale-[1.02]"}`}
+            className={`relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl group ${
+              selectedType ? "opacity-0 pointer-events-none" : "hover:scale-[1.02]"
+            }`}
             onClick={() => handleTypeClick("cottages")}
           >
             <div className="relative h-[400px]">
@@ -124,9 +122,9 @@ const AccommodationSection = () => {
 
           {/* Modular Houses Section */}
           <Card 
-            className={`relative overflow-hidden cursor-pointer transition-all duration-500 hover:shadow-2xl group ${
-              clickedCard === "modular" ? "scale-105 z-10" : ""
-            } ${isAnimating && clickedCard === "modular" ? "" : "hover:scale-[1.02]"}`}
+            className={`relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl group ${
+              selectedType ? "opacity-0 pointer-events-none" : "hover:scale-[1.02]"
+            }`}
             onClick={() => handleTypeClick("modular")}
           >
             <div className="relative h-[400px]">
@@ -152,72 +150,101 @@ const AccommodationSection = () => {
           </Card>
         </div>
 
-        {/* Popup Overlay */}
+        {/* Expanding Card Animation + Popup */}
         {selectedType && (
           <>
             {/* Backdrop */}
             <div 
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 animate-fade-in"
+              className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-500 ${
+                isClosing ? "opacity-0" : "opacity-100"
+              }`}
               onClick={handleClose}
             />
             
-            {/* Popup Modal */}
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+            {/* Animated Card to Popup */}
+            <div 
+              className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${
+                isClosing ? "animate-popup-close" : "animate-popup-open"
+              }`}
+            >
               <div 
-                className="bg-background rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto animate-scale-in"
+                className="bg-background rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col"
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Close Button */}
+                {/* Hero Image Header - fades to show content */}
+                <div 
+                  className={`relative overflow-hidden transition-all duration-500 ${
+                    isAnimating ? "h-[400px]" : "h-0"
+                  }`}
+                >
+                  <img
+                    src={selectedType === "cottages" ? cottageImage : modularImage}
+                    alt={selectedType === "cottages" ? "Коттеджи" : "Модульные дома"}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                </div>
+
+                {/* Close Button & Title */}
                 <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border/50 p-4 flex justify-between items-center">
-                  <h3 className="text-2xl md:text-3xl font-serif text-primary">
+                  <h3 className={`text-2xl md:text-3xl font-serif text-primary transition-opacity duration-300 ${
+                    isAnimating ? "opacity-0" : "opacity-100 delay-300"
+                  }`}>
                     {selectedType === "cottages" ? "Коттеджи" : "Модульные дома"}
                   </h3>
                   <button
                     onClick={handleClose}
-                    className="p-2 rounded-full hover:bg-secondary/80 transition-colors"
+                    className={`p-2 rounded-full hover:bg-secondary/80 transition-all duration-300 ${
+                      isAnimating ? "opacity-0" : "opacity-100 delay-300"
+                    }`}
                   >
                     <X className="w-6 h-6" />
                   </button>
                 </div>
 
-                {/* Content */}
-                <div className="p-6">
-                  <div className="grid md:grid-cols-3 gap-6">
-                    {(selectedType === "cottages" ? cottages : modularHouses).map((item, index) => (
-                      <Card 
-                        key={item.name}
-                        className="overflow-hidden hover:shadow-xl transition-all duration-300 animate-fade-in"
-                        style={{ animationDelay: `${index * 100}ms` }}
-                      >
-                        <div className="relative h-48">
-                          <img
-                            src={selectedType === "cottages" ? cottageImage : modularImage}
-                            alt={item.name}
-                            className="w-full h-full object-cover"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                          <div className="absolute bottom-4 left-4">
-                            <h4 className="text-xl font-semibold text-white">{item.name}</h4>
+                {/* Content - appears after animation */}
+                <div 
+                  className={`overflow-y-auto transition-opacity duration-300 ${
+                    isAnimating ? "opacity-0" : "opacity-100 delay-400"
+                  }`}
+                >
+                  <div className="p-6">
+                    <div className="grid md:grid-cols-3 gap-6">
+                      {(selectedType === "cottages" ? cottages : modularHouses).map((item, index) => (
+                        <Card 
+                          key={item.name}
+                          className="overflow-hidden hover:shadow-xl transition-all duration-300"
+                        >
+                          <div className="relative h-48">
+                            <img
+                              src={selectedType === "cottages" ? cottageImage : modularImage}
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                            <div className="absolute bottom-4 left-4">
+                              <h4 className="text-xl font-semibold text-white">{item.name}</h4>
+                            </div>
                           </div>
-                        </div>
-                        <div className="p-6">
-                          <p className="text-muted-foreground mb-4">{item.description}</p>
-                          <div className="mb-4">
-                            <span className="text-sm font-semibold text-primary">{item.capacity}</span>
+                          <div className="p-6">
+                            <p className="text-muted-foreground mb-4">{item.description}</p>
+                            <div className="mb-4">
+                              <span className="text-sm font-semibold text-primary">{item.capacity}</span>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                              {item.features.map((feature) => (
+                                <span 
+                                  key={feature}
+                                  className="px-3 py-1 bg-secondary/50 text-secondary-foreground text-xs rounded-full"
+                                >
+                                  {feature}
+                                </span>
+                              ))}
+                            </div>
                           </div>
-                          <div className="flex flex-wrap gap-2">
-                            {item.features.map((feature) => (
-                              <span 
-                                key={feature}
-                                className="px-3 py-1 bg-secondary/50 text-secondary-foreground text-xs rounded-full"
-                              >
-                                {feature}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </Card>
-                    ))}
+                        </Card>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
