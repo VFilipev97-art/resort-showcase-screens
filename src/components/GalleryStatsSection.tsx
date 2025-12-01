@@ -33,47 +33,99 @@ const GalleryStatsSection = () => {
     { number: "100%", label: "экологичность" },
   ];
 
-  const images = [
+  const leftColumn = [
     { src: cottageExterior, alt: "Коттедж снаружи" },
+    { src: kamaRiverView, alt: "Вид на Камское море" },
+  ];
+
+  const centerColumn = [
     { src: cottageInterior, alt: "Интерьер коттеджа" },
     { src: banyaExterior, alt: "Русская баня" },
-    { src: kamaRiverView, alt: "Вид на Камское море" },
+    { src: cottageExterior, alt: "Коттедж" },
+  ];
+
+  const rightColumn = [
+    { src: cottageInterior, alt: "Интерьер" },
+    { src: kamaRiverView, alt: "Камское море" },
   ];
 
   return (
     <section ref={sectionRef} className="py-20 bg-background">
       <div className="container mx-auto px-6 md:px-8">
-        {/* Gallery Grid */}
+        {/* Gallery Grid - 3 Columns */}
         <div className="mb-16">
-          <h2 
-            className={`text-4xl md:text-5xl font-serif text-primary mb-12 text-center transition-all duration-1000 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
-          >
-            Наша база отдыха
-          </h2>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            {images.map((image, index) => (
-              <Card
-                key={index}
-                className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}
-                style={{ 
-                  transitionDelay: isVisible ? `${index * 150}ms` : '0ms'
-                }}
-              >
-                <div className="relative h-80 overflow-hidden">
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-              </Card>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Left Column - 2 photos */}
+            <div className="flex flex-col gap-6">
+              {leftColumn.map((image, index) => (
+                <Card
+                  key={`left-${index}`}
+                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 ${
+                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                  }`}
+                  style={{ 
+                    transitionDelay: isVisible ? `${index * 150}ms` : '0ms'
+                  }}
+                >
+                  <div className="relative h-[400px] overflow-hidden">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            {/* Center Column - 3 photos */}
+            <div className="flex flex-col gap-6">
+              {centerColumn.map((image, index) => (
+                <Card
+                  key={`center-${index}`}
+                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 ${
+                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                  }`}
+                  style={{ 
+                    transitionDelay: isVisible ? `${(index + 2) * 150}ms` : '0ms'
+                  }}
+                >
+                  <div className="relative h-[250px] overflow-hidden">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            {/* Right Column - 2 photos */}
+            <div className="flex flex-col gap-6">
+              {rightColumn.map((image, index) => (
+                <Card
+                  key={`right-${index}`}
+                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 ${
+                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                  }`}
+                  style={{ 
+                    transitionDelay: isVisible ? `${(index + 5) * 150}ms` : '0ms'
+                  }}
+                >
+                  <div className="relative h-[400px] overflow-hidden">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
 
