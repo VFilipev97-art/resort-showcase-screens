@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { ChevronDown } from "lucide-react";
+import { X } from "lucide-react";
 import cottageImage from "@/assets/cottage-exterior.jpg";
 import modularImage from "@/assets/modular-house.jpg";
 
@@ -8,6 +8,8 @@ type AccommodationType = "cottages" | "modular" | null;
 
 const AccommodationSection = () => {
   const [selectedType, setSelectedType] = useState<AccommodationType>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [clickedCard, setClickedCard] = useState<AccommodationType>(null);
 
   const cottages = [
     {
@@ -52,7 +54,29 @@ const AccommodationSection = () => {
   ];
 
   const handleTypeClick = (type: AccommodationType) => {
-    setSelectedType(selectedType === type ? null : type);
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
+    setClickedCard(type);
+    
+    // Wait for scale animation to complete before showing popup
+    setTimeout(() => {
+      setSelectedType(type);
+      setIsAnimating(false);
+    }, 400);
+  };
+
+  const handleClose = () => {
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
+    setSelectedType(null);
+    
+    // Wait for popup to fade out before scaling card back
+    setTimeout(() => {
+      setClickedCard(null);
+      setIsAnimating(false);
+    }, 300);
   };
 
   return (
@@ -72,8 +96,8 @@ const AccommodationSection = () => {
           {/* Cottages Section */}
           <Card 
             className={`relative overflow-hidden cursor-pointer transition-all duration-500 hover:shadow-2xl group ${
-              selectedType === "cottages" ? "ring-2 ring-primary shadow-2xl" : ""
-            }`}
+              clickedCard === "cottages" ? "scale-105 z-10" : ""
+            } ${isAnimating && clickedCard === "cottages" ? "" : "hover:scale-[1.02]"}`}
             onClick={() => handleTypeClick("cottages")}
           >
             <div className="relative h-[400px]">
@@ -93,11 +117,6 @@ const AccommodationSection = () => {
                 </p>
                 <div className="flex items-center text-white/80">
                   <span className="text-sm">Нажмите, чтобы узнать больше</span>
-                  <ChevronDown 
-                    className={`ml-2 w-5 h-5 transition-transform duration-500 ${
-                      selectedType === "cottages" ? "rotate-180" : ""
-                    }`}
-                  />
                 </div>
               </div>
             </div>
@@ -106,8 +125,8 @@ const AccommodationSection = () => {
           {/* Modular Houses Section */}
           <Card 
             className={`relative overflow-hidden cursor-pointer transition-all duration-500 hover:shadow-2xl group ${
-              selectedType === "modular" ? "ring-2 ring-primary shadow-2xl" : ""
-            }`}
+              clickedCard === "modular" ? "scale-105 z-10" : ""
+            } ${isAnimating && clickedCard === "modular" ? "" : "hover:scale-[1.02]"}`}
             onClick={() => handleTypeClick("modular")}
           >
             <div className="relative h-[400px]">
@@ -127,106 +146,84 @@ const AccommodationSection = () => {
                 </p>
                 <div className="flex items-center text-white/80">
                   <span className="text-sm">Нажмите, чтобы узнать больше</span>
-                  <ChevronDown 
-                    className={`ml-2 w-5 h-5 transition-transform duration-500 ${
-                      selectedType === "modular" ? "rotate-180" : ""
-                    }`}
-                  />
                 </div>
               </div>
             </div>
           </Card>
         </div>
 
-        {/* Expanded Details - Cottages */}
-        <div 
-          className={`overflow-hidden transition-all duration-700 ${
-            selectedType === "cottages" ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="grid md:grid-cols-3 gap-6 mt-8">
-            {cottages.map((cottage, index) => (
-              <Card 
-                key={cottage.name}
-                className="overflow-hidden hover:shadow-xl transition-all duration-300 animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
+        {/* Popup Overlay */}
+        {selectedType && (
+          <>
+            {/* Backdrop */}
+            <div 
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 animate-fade-in"
+              onClick={handleClose}
+            />
+            
+            {/* Popup Modal */}
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+              <div 
+                className="bg-background rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto animate-scale-in"
+                onClick={(e) => e.stopPropagation()}
               >
-                <div className="relative h-48">
-                  <img
-                    src={cottageImage}
-                    alt={cottage.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <h4 className="text-xl font-semibold text-white">{cottage.name}</h4>
-                  </div>
+                {/* Close Button */}
+                <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border/50 p-4 flex justify-between items-center">
+                  <h3 className="text-2xl md:text-3xl font-serif text-primary">
+                    {selectedType === "cottages" ? "Коттеджи" : "Модульные дома"}
+                  </h3>
+                  <button
+                    onClick={handleClose}
+                    className="p-2 rounded-full hover:bg-secondary/80 transition-colors"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
                 </div>
-                <div className="p-6">
-                  <p className="text-muted-foreground mb-4">{cottage.description}</p>
-                  <div className="mb-4">
-                    <span className="text-sm font-semibold text-primary">{cottage.capacity}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {cottage.features.map((feature) => (
-                      <span 
-                        key={feature}
-                        className="px-3 py-1 bg-secondary/50 text-secondary-foreground text-xs rounded-full"
-                      >
-                        {feature}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
 
-        {/* Expanded Details - Modular Houses */}
-        <div 
-          className={`overflow-hidden transition-all duration-700 ${
-            selectedType === "modular" ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="grid md:grid-cols-3 gap-6 mt-8">
-            {modularHouses.map((house, index) => (
-              <Card 
-                key={house.name}
-                className="overflow-hidden hover:shadow-xl transition-all duration-300 animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="relative h-48">
-                  <img
-                    src={modularImage}
-                    alt={house.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <h4 className="text-xl font-semibold text-white">{house.name}</h4>
-                  </div>
-                </div>
+                {/* Content */}
                 <div className="p-6">
-                  <p className="text-muted-foreground mb-4">{house.description}</p>
-                  <div className="mb-4">
-                    <span className="text-sm font-semibold text-primary">{house.capacity}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {house.features.map((feature) => (
-                      <span 
-                        key={feature}
-                        className="px-3 py-1 bg-secondary/50 text-secondary-foreground text-xs rounded-full"
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {(selectedType === "cottages" ? cottages : modularHouses).map((item, index) => (
+                      <Card 
+                        key={item.name}
+                        className="overflow-hidden hover:shadow-xl transition-all duration-300 animate-fade-in"
+                        style={{ animationDelay: `${index * 100}ms` }}
                       >
-                        {feature}
-                      </span>
+                        <div className="relative h-48">
+                          <img
+                            src={selectedType === "cottages" ? cottageImage : modularImage}
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                          <div className="absolute bottom-4 left-4">
+                            <h4 className="text-xl font-semibold text-white">{item.name}</h4>
+                          </div>
+                        </div>
+                        <div className="p-6">
+                          <p className="text-muted-foreground mb-4">{item.description}</p>
+                          <div className="mb-4">
+                            <span className="text-sm font-semibold text-primary">{item.capacity}</span>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {item.features.map((feature) => (
+                              <span 
+                                key={feature}
+                                className="px-3 py-1 bg-secondary/50 text-secondary-foreground text-xs rounded-full"
+                              >
+                                {feature}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </Card>
                     ))}
                   </div>
                 </div>
-              </Card>
-            ))}
-          </div>
-        </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
