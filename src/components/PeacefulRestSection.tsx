@@ -8,27 +8,25 @@ const PeacefulRestSection = () => {
     {
       image: forestWalkImage,
       title: "Прогулки по лесу",
-      description: "Хвойный лес и живописные тропы"
+      description: "Хвойный лес и живописные тропы",
     },
     {
       image: windowViewImage,
       title: "Тишина и уединение",
-      description: "Отключитесь от городской суеты"
+      description: "Отключитесь от городской суеты",
     },
     {
       image: banyaImage,
       title: "Традиционная баня",
-      description: "Русская баня с видом на Камское море"
-    }
+      description: "Русская баня с чаном",
+    },
   ];
 
   return (
     <section className="py-20 bg-gradient-to-b from-background to-secondary/20">
       <div className="container mx-auto px-6 md:px-8">
         <div className="text-center mb-12 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-serif text-primary mb-4">
-            Спокойный отдых
-          </h2>
+          <h2 className="text-4xl md:text-5xl font-serif text-primary mb-4">Спокойный отдых</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Здесь время течет медленнее, даря вам возможность восстановить силы и обрести гармонию с природой
           </p>
