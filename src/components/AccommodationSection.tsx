@@ -110,10 +110,11 @@ const AccommodationSection = () => {
           {/* Cottages Section */}
           <Card 
             ref={cottageCardRef}
-            className={`relative overflow-hidden cursor-pointer transition-all duration-700 hover:shadow-2xl group ${
-              selectedType === "cottages" && !isClosing ? "invisible" : 
-              selectedType === "cottages" && isClosing ? "opacity-0" :
-              selectedType ? "opacity-30 pointer-events-none" : "hover:scale-[1.02]"
+            className={`relative overflow-hidden cursor-pointer hover:shadow-2xl group ${
+              selectedType === "cottages" && !isClosing ? "!invisible !transition-none" : 
+              selectedType === "cottages" && isClosing ? "opacity-0 transition-opacity duration-700" :
+              selectedType ? "opacity-30 pointer-events-none transition-opacity duration-300" : 
+              "hover:scale-[1.02] transition-all duration-300"
             }`}
             onClick={() => handleTypeClick("cottages")}
           >
@@ -142,10 +143,11 @@ const AccommodationSection = () => {
           {/* Modular Houses Section */}
           <Card 
             ref={modularCardRef}
-            className={`relative overflow-hidden cursor-pointer transition-all duration-700 hover:shadow-2xl group ${
-              selectedType === "modular" && !isClosing ? "invisible" : 
-              selectedType === "modular" && isClosing ? "opacity-0" :
-              selectedType ? "opacity-30 pointer-events-none" : "hover:scale-[1.02]"
+            className={`relative overflow-hidden cursor-pointer hover:shadow-2xl group ${
+              selectedType === "modular" && !isClosing ? "!invisible !transition-none" : 
+              selectedType === "modular" && isClosing ? "opacity-0 transition-opacity duration-700" :
+              selectedType ? "opacity-30 pointer-events-none transition-opacity duration-300" : 
+              "hover:scale-[1.02] transition-all duration-300"
             }`}
             onClick={() => handleTypeClick("modular")}
           >
