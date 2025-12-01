@@ -1,9 +1,12 @@
 import { Card } from "@/components/ui/card";
 import { useEffect, useRef, useState } from "react";
-import cottageExterior from "@/assets/cottage-exterior.jpg";
-import cottageInterior from "@/assets/cottage-interior.jpg";
-import banyaExterior from "@/assets/banya-exterior.jpg";
-import kamaRiverView from "@/assets/kama-river-view.jpg";
+import windowView from "@/assets/gallery-window-view.jpg";
+import pierWinter from "@/assets/gallery-pier-winter.jpg";
+import rabbitImage from "@/assets/gallery-rabbit.jpg";
+import tubingImage from "@/assets/gallery-tubing.jpg";
+import forestWalk from "@/assets/gallery-forest-walk.jpg";
+import goatImage from "@/assets/gallery-goat.jpg";
+import skiingImage from "@/assets/gallery-skiing.jpg";
 
 const GalleryStatsSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -34,19 +37,19 @@ const GalleryStatsSection = () => {
   ];
 
   const leftColumn = [
-    { src: cottageExterior, alt: "Коттедж снаружи" },
-    { src: kamaRiverView, alt: "Вид на Камское море" },
+    { src: windowView, alt: "Вид из окна на зимний лес" },
+    { src: pierWinter, alt: "Зимний причал" },
   ];
 
   const centerColumn = [
-    { src: cottageInterior, alt: "Интерьер коттеджа" },
-    { src: banyaExterior, alt: "Русская баня" },
-    { src: cottageExterior, alt: "Коттедж" },
+    { src: rabbitImage, alt: "Контактный зоопарк - кролики" },
+    { src: tubingImage, alt: "Катание на тюбинге" },
+    { src: forestWalk, alt: "Прогулка по зимнему лесу" },
   ];
 
   const rightColumn = [
-    { src: cottageInterior, alt: "Интерьер" },
-    { src: kamaRiverView, alt: "Камское море" },
+    { src: goatImage, alt: "Контактный зоопарк - козлик" },
+    { src: skiingImage, alt: "Лыжные прогулки" },
   ];
 
   return (
