@@ -45,19 +45,9 @@ const HeroSection = () => {
       {/* Content */}
       <div className="container mx-auto px-6 md:px-8 z-10 relative">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Title */}
+          {/* Left Side - Description */}
           <div className="space-y-6 animate-fade-in">
-            <div className="space-y-2">
-              <h1 className="text-5xl md:text-7xl font-serif text-primary-foreground leading-tight tracking-wide">
-                СТРОГАНОВСКИЕ
-                <br />
-                ПРОСТОРЫ
-              </h1>
-              <svg className="w-64 h-32 opacity-80 text-primary-foreground" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M 10 50 Q 50 20, 100 50 T 190 50" />
-              </svg>
-            </div>
-            <p className="text-xl md:text-2xl text-primary-foreground/90 font-light leading-relaxed">
+            <p className="text-3xl md:text-4xl text-primary-foreground/90 font-light leading-relaxed">
               уютные коттеджи
               <br />
               и глэмпинг в хвойном лесу
