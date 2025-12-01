@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { X } from "lucide-react";
 import cottageImage from "@/assets/cottage-exterior.jpg";
@@ -6,10 +6,21 @@ import modularImage from "@/assets/modular-house.jpg";
 
 type AccommodationType = "cottages" | "modular" | null;
 
+interface CardPosition {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
+
 const AccommodationSection = () => {
   const [selectedType, setSelectedType] = useState<AccommodationType>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [animationPhase, setAnimationPhase] = useState<'move' | 'fade' | 'show' | null>(null);
+  const [cardPosition, setCardPosition] = useState<CardPosition | null>(null);
+  const cottageCardRef = useRef<HTMLDivElement>(null);
+  const modularCardRef = useRef<HTMLDivElement>(null);
 
   const cottages = [
     {
@@ -56,13 +67,36 @@ const AccommodationSection = () => {
   const handleTypeClick = (type: AccommodationType) => {
     if (isAnimating || selectedType) return;
     
+    const cardRef = type === "cottages" ? cottageCardRef : modularCardRef;
+    const rect = cardRef.current?.getBoundingClientRect();
+    
+    if (!rect) return;
+    
+    setCardPosition({
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height
+    });
+    
     setIsAnimating(true);
     setSelectedType(type);
+    setAnimationPhase('move');
     
-    // Wait for animation to complete
+    // Phase 1: Move and scale (600ms)
+    setTimeout(() => {
+      setAnimationPhase('fade');
+    }, 600);
+    
+    // Phase 2: Fade out content (300ms)
+    setTimeout(() => {
+      setAnimationPhase('show');
+    }, 900);
+    
+    // Phase 3: Show new content (300ms)
     setTimeout(() => {
       setIsAnimating(false);
-    }, 600);
+    }, 1200);
   };
 
   const handleClose = () => {
@@ -70,10 +104,11 @@ const AccommodationSection = () => {
     
     setIsClosing(true);
     
-    // Wait for closing animation
     setTimeout(() => {
       setSelectedType(null);
       setIsClosing(false);
+      setAnimationPhase(null);
+      setCardPosition(null);
     }, 600);
   };
 
@@ -93,8 +128,9 @@ const AccommodationSection = () => {
         <div className="grid md:grid-cols-2 gap-4 mb-8 relative">
           {/* Cottages Section */}
           <Card 
+            ref={cottageCardRef}
             className={`relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl group ${
-              selectedType ? "opacity-0 pointer-events-none" : "hover:scale-[1.02]"
+              selectedType === "cottages" ? "invisible" : selectedType ? "opacity-50 pointer-events-none" : "hover:scale-[1.02]"
             }`}
             onClick={() => handleTypeClick("cottages")}
           >
@@ -122,8 +158,9 @@ const AccommodationSection = () => {
 
           {/* Modular Houses Section */}
           <Card 
+            ref={modularCardRef}
             className={`relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl group ${
-              selectedType ? "opacity-0 pointer-events-none" : "hover:scale-[1.02]"
+              selectedType === "modular" ? "invisible" : selectedType ? "opacity-50 pointer-events-none" : "hover:scale-[1.02]"
             }`}
             onClick={() => handleTypeClick("modular")}
           >
@@ -151,30 +188,38 @@ const AccommodationSection = () => {
         </div>
 
         {/* Expanding Card Animation + Popup */}
-        {selectedType && (
+        {selectedType && cardPosition && (
           <>
-            {/* Backdrop */}
+            {/* Backdrop - Fades in during phase 1 */}
             <div 
-              className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-500 ${
-                isClosing ? "opacity-0" : "opacity-100"
+              className={`fixed inset-0 bg-black/70 z-40 transition-opacity duration-600 ${
+                isClosing ? "opacity-0" : animationPhase === 'move' ? "opacity-0 animate-backdrop-fade" : "opacity-100"
               }`}
-              onClick={handleClose}
+              onClick={isAnimating ? undefined : handleClose}
             />
             
-            {/* Animated Card to Popup */}
+            {/* Animated Card Container */}
             <div 
-              className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${
-                isClosing ? "animate-popup-close" : "animate-popup-open"
-              }`}
+              className="fixed z-50 transition-all duration-600 ease-out"
+              style={{
+                top: animationPhase === 'move' ? `${cardPosition.top}px` : '5vh',
+                left: animationPhase === 'move' ? `${cardPosition.left}px` : '50%',
+                width: animationPhase === 'move' ? `${cardPosition.width}px` : '90vw',
+                height: animationPhase === 'move' ? `${cardPosition.height}px` : '90vh',
+                transform: animationPhase === 'move' ? 'none' : 'translateX(-50%)',
+                maxWidth: animationPhase === 'move' ? 'none' : '1152px',
+              }}
             >
               <div 
-                className="bg-background rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+                className={`w-full h-full rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-colors duration-300 ${
+                  animationPhase === 'show' || isClosing ? 'bg-background' : 'bg-transparent'
+                }`}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Hero Image Header - fades to show content */}
+                {/* Phase 1 & 2: Original Card Image */}
                 <div 
-                  className={`relative overflow-hidden transition-all duration-500 ${
-                    isAnimating ? "h-[400px]" : "h-0"
+                  className={`absolute inset-0 transition-opacity duration-300 ${
+                    animationPhase === 'fade' ? 'opacity-0' : animationPhase === 'show' || isClosing ? 'opacity-0' : 'opacity-100'
                   }`}
                 >
                   <img
@@ -183,67 +228,77 @@ const AccommodationSection = () => {
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 flex flex-col justify-end p-8">
+                    <h3 className="text-3xl md:text-4xl font-serif text-white mb-3">
+                      {selectedType === "cottages" ? "Коттеджи" : "Модульные дома"}
+                    </h3>
+                    <p className="text-white/90 text-lg">
+                      {selectedType === "cottages" 
+                        ? "Традиционные деревянные дома с террасами и мангальными зонами"
+                        : "Современные дома с панорамными окнами и стильным интерьером"}
+                    </p>
+                  </div>
                 </div>
 
-                {/* Close Button & Title */}
-                <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border/50 p-4 flex justify-between items-center">
-                  <h3 className={`text-2xl md:text-3xl font-serif text-primary transition-opacity duration-300 ${
-                    isAnimating ? "opacity-0" : "opacity-100 delay-300"
-                  }`}>
-                    {selectedType === "cottages" ? "Коттеджи" : "Модульные дома"}
-                  </h3>
-                  <button
-                    onClick={handleClose}
-                    className={`p-2 rounded-full hover:bg-secondary/80 transition-all duration-300 ${
-                      isAnimating ? "opacity-0" : "opacity-100 delay-300"
-                    }`}
-                  >
-                    <X className="w-6 h-6" />
-                  </button>
-                </div>
-
-                {/* Content - appears after animation */}
+                {/* Phase 3: New Popup Content */}
                 <div 
-                  className={`overflow-y-auto transition-opacity duration-300 ${
-                    isAnimating ? "opacity-0" : "opacity-100 delay-400"
-                  }`}
+                  className={`relative w-full h-full flex flex-col transition-opacity duration-300 ${
+                    animationPhase === 'show' ? 'opacity-100' : 'opacity-0'
+                  } ${isClosing ? 'animate-popup-close-content' : ''}`}
                 >
-                  <div className="p-6">
-                    <div className="grid md:grid-cols-3 gap-6">
-                      {(selectedType === "cottages" ? cottages : modularHouses).map((item, index) => (
-                        <Card 
-                          key={item.name}
-                          className="overflow-hidden hover:shadow-xl transition-all duration-300"
-                        >
-                          <div className="relative h-48">
-                            <img
-                              src={selectedType === "cottages" ? cottageImage : modularImage}
-                              alt={item.name}
-                              className="w-full h-full object-cover"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                            <div className="absolute bottom-4 left-4">
-                              <h4 className="text-xl font-semibold text-white">{item.name}</h4>
+                  {/* Header with Close Button */}
+                  <div className="flex-shrink-0 bg-background/95 backdrop-blur border-b border-border/50 p-4 flex justify-between items-center">
+                    <h3 className="text-2xl md:text-3xl font-serif text-primary">
+                      {selectedType === "cottages" ? "Коттеджи" : "Модульные дома"}
+                    </h3>
+                    <button
+                      onClick={handleClose}
+                      className="p-2 rounded-full hover:bg-secondary/80 transition-colors"
+                      disabled={isAnimating}
+                    >
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+
+                  {/* Scrollable Content */}
+                  <div className="flex-1 overflow-y-auto">
+                    <div className="p-6">
+                      <div className="grid md:grid-cols-3 gap-6">
+                        {(selectedType === "cottages" ? cottages : modularHouses).map((item, index) => (
+                          <Card 
+                            key={item.name}
+                            className="overflow-hidden hover:shadow-xl transition-all duration-300"
+                          >
+                            <div className="relative h-48">
+                              <img
+                                src={selectedType === "cottages" ? cottageImage : modularImage}
+                                alt={item.name}
+                                className="w-full h-full object-cover"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                              <div className="absolute bottom-4 left-4">
+                                <h4 className="text-xl font-semibold text-white">{item.name}</h4>
+                              </div>
                             </div>
-                          </div>
-                          <div className="p-6">
-                            <p className="text-muted-foreground mb-4">{item.description}</p>
-                            <div className="mb-4">
-                              <span className="text-sm font-semibold text-primary">{item.capacity}</span>
+                            <div className="p-6">
+                              <p className="text-muted-foreground mb-4">{item.description}</p>
+                              <div className="mb-4">
+                                <span className="text-sm font-semibold text-primary">{item.capacity}</span>
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                {item.features.map((feature) => (
+                                  <span 
+                                    key={feature}
+                                    className="px-3 py-1 bg-secondary/50 text-secondary-foreground text-xs rounded-full"
+                                  >
+                                    {feature}
+                                  </span>
+                                ))}
+                              </div>
                             </div>
-                            <div className="flex flex-wrap gap-2">
-                              {item.features.map((feature) => (
-                                <span 
-                                  key={feature}
-                                  className="px-3 py-1 bg-secondary/50 text-secondary-foreground text-xs rounded-full"
-                                >
-                                  {feature}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </Card>
-                      ))}
+                          </Card>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
