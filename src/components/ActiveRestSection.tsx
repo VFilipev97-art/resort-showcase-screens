@@ -1,24 +1,24 @@
 import { Card } from "@/components/ui/card";
-import cottageImage from "@/assets/cottage-exterior.jpg";
-import cottageInteriorImage from "@/assets/cottage-interior.jpg";
-import heroImage from "@/assets/hero-cottages.jpg";
+import snowmobileImage from "@/assets/active-snowmobile.jpg";
+import skatingImage from "@/assets/active-skating.jpg";
+import skiingImage from "@/assets/active-skiing.jpg";
 
 const ActiveRestSection = () => {
   const activities = [
     {
-      image: cottageImage,
-      title: "Квадроциклы",
-      description: "Покорите лесные тропы на мощных квадроциклах"
-    },
-    {
-      image: heroImage,
+      image: snowmobileImage,
       title: "Снегоходы",
       description: "Зимние приключения на скоростных снегоходах"
     },
     {
-      image: cottageInteriorImage,
-      title: "Активные маршруты",
-      description: "Пешие походы и экстремальные развлечения"
+      image: skatingImage,
+      title: "Коньки",
+      description: "Катание на коньках на открытом катке"
+    },
+    {
+      image: skiingImage,
+      title: "Лыжи",
+      description: "Лыжные прогулки по живописным трассам"
     }
   ];
 
