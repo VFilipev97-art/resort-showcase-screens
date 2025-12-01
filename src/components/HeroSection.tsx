@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
-import heroImage from "@/assets/hero-winter-forest.jpg";
+import heroImage from "@/assets/hero-cottages.jpg";
+import logo from "@/assets/logo.png";
 
 const HeroSection = () => {
   return (
@@ -9,7 +10,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 z-0">
         <img
           src={heroImage}
-          alt="Зимний лес с коттеджами"
+          alt="Коттеджи базы отдыха Строгановские Просторы зимой"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/50 to-primary/70" />
@@ -19,6 +20,7 @@ const HeroSection = () => {
       <nav className="absolute top-0 left-0 right-0 z-20 p-6 md:p-8">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center gap-8">
+            <img src={logo} alt="Строгановские Просторы" className="h-12 md:h-16" />
             <a href="#" className="text-primary-foreground hover:text-primary-foreground/80 transition-colors">
               дома
             </a>
