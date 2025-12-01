@@ -43,24 +43,24 @@ const HeroSection = () => {
       </nav>
 
       {/* Content */}
-      <div className="container mx-auto px-6 md:px-8 z-10 relative">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Description */}
-          <div className="space-y-6 animate-fade-in">
-            <p className="text-3xl md:text-4xl text-primary-foreground/90 font-light leading-relaxed">
-              уютные коттеджи
-              <br />
-              и глэмпинг в хвойном лесу
-              <br />
-              на берегу камского моря
-            </p>
-          </div>
+      <div className="absolute bottom-0 left-0 right-0 z-10 pb-12 md:pb-16">
+        <div className="container mx-auto px-6 md:px-8">
+          <div className="grid md:grid-cols-2 gap-8 items-end">
+            {/* Left Side - Tagline */}
+            <div className="animate-fade-in">
+              <p className="text-2xl md:text-3xl text-primary-foreground font-light leading-relaxed">
+                уютные коттеджи и глэмпинг
+                <br />
+                на берегу камского моря
+              </p>
+            </div>
 
-          {/* Right Side - Description */}
-          <div className="bg-primary-foreground/10 backdrop-blur-md p-8 rounded-2xl border border-primary-foreground/20 animate-slide-in-right">
-            <p className="text-primary-foreground text-lg leading-relaxed">
-              Уединенный отдых в уютном историческом месте Пермского края. Наслаждитесь первозданной природой и европейским уровнем комфорта размещения в уютных коттеджах и номерах. Зарядитесь эмоциями от прогулки на квадроциклах, а после отдохните душой и телом в традиционной русской бане.
-            </p>
+            {/* Right Side - Short Description */}
+            <div className="bg-primary-foreground/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-primary-foreground/20 animate-slide-in-right">
+              <p className="text-primary-foreground text-base md:text-lg leading-relaxed">
+                Уединённый отдых в хвойном лесу с европейским уровнем комфорта. Квадроциклы, традиционная баня и первозданная природа Пермского края.
+              </p>
+            </div>
           </div>
         </div>
       </div>
