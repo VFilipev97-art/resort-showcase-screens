@@ -3,6 +3,7 @@ import GalleryStatsSection from "@/components/GalleryStatsSection";
 import PeacefulRestSection from "@/components/PeacefulRestSection";
 import ActiveRestSection from "@/components/ActiveRestSection";
 import BasePlanSection from "@/components/BasePlanSection";
+import AccommodationSection from "@/components/AccommodationSection";
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <PeacefulRestSection />
       <ActiveRestSection />
       <BasePlanSection />
+      <AccommodationSection />
     </div>
   );
 };
