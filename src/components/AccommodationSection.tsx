@@ -190,11 +190,12 @@ const AccommodationSection = () => {
         {/* Expanding Card Animation + Popup */}
         {selectedType && cardPosition && (
           <>
-            {/* Backdrop - Fades in during phase 1 */}
+            {/* Backdrop - Fades in from start */}
             <div 
-              className={`fixed inset-0 bg-black/70 z-40 transition-opacity duration-600 ${
-                isClosing ? "opacity-0" : animationPhase === 'move' ? "opacity-0 animate-backdrop-fade" : "opacity-100"
+              className={`fixed inset-0 bg-black/70 z-40 ${
+                isClosing ? "opacity-0 transition-opacity duration-600" : "opacity-100 transition-opacity duration-600"
               }`}
+              style={{ opacity: animationPhase === 'move' && !isClosing ? 0 : undefined }}
               onClick={isAnimating ? undefined : handleClose}
             />
             
