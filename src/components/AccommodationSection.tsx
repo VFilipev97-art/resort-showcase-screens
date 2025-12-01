@@ -188,10 +188,10 @@ const AccommodationSection = () => {
               className={`fixed z-50 bg-background rounded-2xl shadow-2xl overflow-hidden
                 ${isClosing ? 'accommodation-popup-collapsing' : showContent ? 'accommodation-popup-expanded' : 'accommodation-popup-expanding'}`}
             >
-              {/* Hero Image - Fades out */}
+              {/* Hero Image - Shows only during opening */}
               <div 
                 className={`absolute inset-0 transition-opacity duration-500 ${
-                  showContent && !isClosing ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                  showContent || isClosing ? 'opacity-0 pointer-events-none' : 'opacity-100'
                 }`}
               >
                 <img
@@ -212,10 +212,10 @@ const AccommodationSection = () => {
                 </div>
               </div>
 
-              {/* Popup Content - Fades in */}
+              {/* Popup Content - Visible during closing */}
               <div 
                 className={`relative w-full h-full flex flex-col transition-opacity duration-300 ${
-                  showContent && !isClosing ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  showContent ? 'opacity-100' : 'opacity-0 pointer-events-none'
                 }`}
               >
                 {/* Header with Close Button */}
