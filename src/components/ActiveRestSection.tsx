@@ -4,14 +4,16 @@ import snowmobileImage from "@/assets/active-snowmobile.jpg";
 import skatingImage from "@/assets/active-skating.jpg";
 import skiingImage from "@/assets/active-skiing.jpg";
 import skatingVideo from "@/assets/active-skating-video.mp4";
+import snowmobileVideo from "@/assets/active-snowmobile-video.mp4";
 
 const ActiveRestSection = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const activities = [
     {
       image: snowmobileImage,
+      video: snowmobileVideo,
       title: "Снегоходы",
       description: "Зимние приключения на скоростных снегоходах"
     },
@@ -30,15 +32,17 @@ const ActiveRestSection = () => {
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);
-    if (activities[index].video && videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play();
+    const video = videoRefs.current[index];
+    if (activities[index].video && video) {
+      video.currentTime = 0;
+      video.play();
     }
   };
 
-  const handleMouseLeave = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
+  const handleMouseLeave = (index: number) => {
+    const video = videoRefs.current[index];
+    if (video) {
+      video.pause();
     }
     setHoveredIndex(null);
   };
@@ -62,7 +66,7 @@ const ActiveRestSection = () => {
               className="group relative overflow-hidden rounded-2xl border-border/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl animate-fade-in"
               style={{ animationDelay: `${index * 150}ms` }}
               onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
+              onMouseLeave={() => handleMouseLeave(index)}
             >
               <div className="relative h-[400px] overflow-hidden">
                 <img
@@ -72,7 +76,7 @@ const ActiveRestSection = () => {
                 />
                 {activity.video && (
                   <video
-                    ref={index === 1 ? videoRef : undefined}
+                    ref={(el) => { videoRefs.current[index] = el; }}
                     src={activity.video}
                     muted
                     loop
