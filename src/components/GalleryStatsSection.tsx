@@ -19,7 +19,7 @@ const GalleryStatsSection = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (sectionRef.current) {
@@ -38,12 +38,12 @@ const GalleryStatsSection = () => {
 
   const leftColumn = [
     { src: windowView, alt: "Вид из окна на зимний лес" },
-    { src: pierWinter, alt: "Зимний причал" },
+    { src: tubingImage, alt: "Катание на тюбинге" },
   ];
-
+  pierWinter;
   const centerColumn = [
     { src: rabbitImage, alt: "Контактный зоопарк - кролики" },
-    { src: tubingImage, alt: "Катание на тюбинге" },
+    { src: pierWinter, alt: "Зимний причал" },
     { src: forestWalk, alt: "Прогулка по зимнему лесу" },
   ];
 
@@ -64,10 +64,10 @@ const GalleryStatsSection = () => {
                 <Card
                   key={`left-${index}`}
                   className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-lg ${
-                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                   }`}
-                  style={{ 
-                    transitionDelay: isVisible ? `${index * 150}ms` : '0ms'
+                  style={{
+                    transitionDelay: isVisible ? `${index * 150}ms` : "0ms",
                   }}
                 >
                   <div className="relative h-[450px] overflow-hidden">
@@ -88,10 +88,10 @@ const GalleryStatsSection = () => {
                 <Card
                   key={`center-${index}`}
                   className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-lg ${
-                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                   }`}
-                  style={{ 
-                    transitionDelay: isVisible ? `${(index + 2) * 150}ms` : '0ms'
+                  style={{
+                    transitionDelay: isVisible ? `${(index + 2) * 150}ms` : "0ms",
                   }}
                 >
                   <div className="relative h-[290px] overflow-hidden">
@@ -112,10 +112,10 @@ const GalleryStatsSection = () => {
                 <Card
                   key={`right-${index}`}
                   className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-lg ${
-                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                   }`}
-                  style={{ 
-                    transitionDelay: isVisible ? `${(index + 5) * 150}ms` : '0ms'
+                  style={{
+                    transitionDelay: isVisible ? `${(index + 5) * 150}ms` : "0ms",
                   }}
                 >
                   <div className="relative h-[450px] overflow-hidden">
@@ -133,54 +133,51 @@ const GalleryStatsSection = () => {
         </div>
 
         {/* Info Section */}
-        <Card 
+        <Card
           className={`bg-card p-10 md:p-16 mb-16 border-border/50 transition-all duration-1000 hover:shadow-xl ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
-          style={{ transitionDelay: isVisible ? '600ms' : '0ms' }}
+          style={{ transitionDelay: isVisible ? "600ms" : "0ms" }}
         >
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h3 className="text-3xl md:text-4xl font-serif text-primary mb-6">
-              Погрузитесь в атмосферу уединения
-            </h3>
+            <h3 className="text-3xl md:text-4xl font-serif text-primary mb-6">Погрузитесь в атмосферу уединения</h3>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Строгановские Просторы — это место, где вы сможете отдохнуть от городской суеты, насладиться тишиной хвойного леса и величием Камского моря. Наши коттеджи оборудованы всем необходимым для комфортного проживания, а территория базы предлагает множество активностей на любой вкус.
+              Строгановские Просторы — это место, где вы сможете отдохнуть от городской суеты, насладиться тишиной
+              хвойного леса и величием Камского моря. Наши коттеджи оборудованы всем необходимым для комфортного
+              проживания, а территория базы предлагает множество активностей на любой вкус.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Мы создали пространство, где современный комфорт гармонично сочетается с природной красотой Пермского края. Каждый элемент продуман для вашего максимального удобства и релаксации.
+              Мы создали пространство, где современный комфорт гармонично сочетается с природной красотой Пермского
+              края. Каждый элемент продуман для вашего максимального удобства и релаксации.
             </p>
           </div>
         </Card>
 
         {/* Stats Grid */}
         <div>
-          <h3 
+          <h3
             className={`text-3xl md:text-4xl font-serif text-primary mb-10 text-center transition-all duration-1000 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
-            style={{ transitionDelay: isVisible ? '800ms' : '0ms' }}
+            style={{ transitionDelay: isVisible ? "800ms" : "0ms" }}
           >
             Цифры и факты
           </h3>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <Card
                 key={index}
                 className={`p-8 text-center bg-gradient-to-br from-secondary to-accent border-none transform transition-all duration-700 hover:scale-105 hover:shadow-xl ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                 }`}
-                style={{ 
-                  transitionDelay: isVisible ? `${1000 + index * 100}ms` : '0ms'
+                style={{
+                  transitionDelay: isVisible ? `${1000 + index * 100}ms` : "0ms",
                 }}
               >
                 <div className="space-y-3">
-                  <div className="text-5xl md:text-6xl font-bold text-primary-foreground">
-                    {stat.number}
-                  </div>
-                  <div className="text-sm md:text-base text-primary-foreground/90 font-medium">
-                    {stat.label}
-                  </div>
+                  <div className="text-5xl md:text-6xl font-bold text-primary-foreground">{stat.number}</div>
+                  <div className="text-sm md:text-base text-primary-foreground/90 font-medium">{stat.label}</div>
                 </div>
               </Card>
             ))}
