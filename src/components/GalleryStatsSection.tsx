@@ -63,7 +63,7 @@ const GalleryStatsSection = () => {
               {leftColumn.map((image, index) => (
                 <Card
                   key={`left-${index}`}
-                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-lg ${
+                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-sm ${
                     isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                   }`}
                   style={{
@@ -87,14 +87,14 @@ const GalleryStatsSection = () => {
               {centerColumn.map((image, index) => (
                 <Card
                   key={`center-${index}`}
-                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-lg ${
+                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-sm ${
                     isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                   }`}
                   style={{
                     transitionDelay: isVisible ? `${(index + 2) * 150}ms` : "0ms",
                   }}
                 >
-                  <div className="relative h-[290px] overflow-hidden">
+                  <div className="relative h-[296px] overflow-hidden">
                     <img
                       src={image.src}
                       alt={image.alt}
@@ -111,7 +111,7 @@ const GalleryStatsSection = () => {
               {rightColumn.map((image, index) => (
                 <Card
                   key={`right-${index}`}
-                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-lg ${
+                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-sm ${
                     isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                   }`}
                   style={{
