@@ -42,9 +42,9 @@ const GalleryStatsSection = () => {
   ];
   pierWinter;
   const centerColumn = [
-    { src: rabbitImage, alt: "Контактный зоопарк - кролики" },
-    { src: pierWinter, alt: "Зимний причал" },
-    { src: forestWalk, alt: "Прогулка по зимнему лесу" },
+    { src: rabbitImage, alt: "Контактный зоопарк - кролики", position: "center" },
+    { src: pierWinter, alt: "Зимний причал", position: "center" },
+    { src: forestWalk, alt: "Прогулка по зимнему лесу", position: "bottom" },
   ];
 
   const rightColumn = [
@@ -99,6 +99,7 @@ const GalleryStatsSection = () => {
                       src={image.src}
                       alt={image.alt}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      style={{ objectPosition: image.position }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
