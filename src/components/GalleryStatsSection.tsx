@@ -57,20 +57,20 @@ const GalleryStatsSection = () => {
       <div className="container mx-auto px-6 md:px-8">
         {/* Gallery Grid - 3 Columns */}
         <div className="mb-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {/* Left Column - 2 photos */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
               {leftColumn.map((image, index) => (
                 <Card
                   key={`left-${index}`}
-                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 ${
+                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-lg ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                   }`}
                   style={{ 
                     transitionDelay: isVisible ? `${index * 150}ms` : '0ms'
                   }}
                 >
-                  <div className="relative h-[400px] overflow-hidden">
+                  <div className="relative h-[450px] overflow-hidden">
                     <img
                       src={image.src}
                       alt={image.alt}
@@ -83,18 +83,18 @@ const GalleryStatsSection = () => {
             </div>
 
             {/* Center Column - 3 photos */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
               {centerColumn.map((image, index) => (
                 <Card
                   key={`center-${index}`}
-                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 ${
+                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-lg ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                   }`}
                   style={{ 
                     transitionDelay: isVisible ? `${(index + 2) * 150}ms` : '0ms'
                   }}
                 >
-                  <div className="relative h-[250px] overflow-hidden">
+                  <div className="relative h-[290px] overflow-hidden">
                     <img
                       src={image.src}
                       alt={image.alt}
@@ -107,18 +107,18 @@ const GalleryStatsSection = () => {
             </div>
 
             {/* Right Column - 2 photos */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
               {rightColumn.map((image, index) => (
                 <Card
                   key={`right-${index}`}
-                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 ${
+                  className={`overflow-hidden group cursor-pointer transform transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl border-border/50 rounded-lg ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                   }`}
                   style={{ 
                     transitionDelay: isVisible ? `${(index + 5) * 150}ms` : '0ms'
                   }}
                 >
-                  <div className="relative h-[400px] overflow-hidden">
+                  <div className="relative h-[450px] overflow-hidden">
                     <img
                       src={image.src}
                       alt={image.alt}
