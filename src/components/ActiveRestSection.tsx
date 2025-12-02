@@ -68,9 +68,7 @@ const ActiveRestSection = () => {
                 <img
                   src={activity.image}
                   alt={activity.title}
-                  className={`w-full h-full object-cover transition-all duration-700 ${
-                    hoveredIndex === index && activity.video ? "opacity-0" : "opacity-100"
-                  }`}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 {activity.video && (
                   <video
@@ -79,8 +77,8 @@ const ActiveRestSection = () => {
                     muted
                     loop
                     playsInline
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-                      hoveredIndex === index ? "opacity-100" : "opacity-0"
+                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-out ${
+                      hoveredIndex === index ? "opacity-100 scale-100" : "opacity-0 scale-105"
                     }`}
                   />
                 )}
