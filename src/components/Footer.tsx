@@ -1,4 +1,4 @@
-import registryLogo from "@/assets/registry-logo.svg";
+import nationalProjectsLogo from "@/assets/national-projects-logo.png";
 
 const Footer = () => {
   return (
@@ -77,9 +77,9 @@ const Footer = () => {
         <div className="border-t border-border pt-8 mb-8">
           <div className="flex flex-col md:flex-row items-center gap-4 justify-center text-center">
             <img 
-              src={registryLogo} 
-              alt="Логотип реестра" 
-              className="h-16 w-auto opacity-60"
+              src={nationalProjectsLogo} 
+              alt="Национальные проекты России - Туризм и индустрия гостеприимства" 
+              className="h-16 w-auto"
             />
             <div className="text-sm text-muted-foreground">
               <p>Единый реестр объектов классификации в сфере туристской индустрии</p>
