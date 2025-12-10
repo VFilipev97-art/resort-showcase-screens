@@ -180,7 +180,7 @@ const GalleryStatsSection = () => {
                 <div className="space-y-2">
                   <div className="text-4xl md:text-5xl font-bold text-primary-foreground">{stat.number}</div>
                   <div className="text-sm md:text-base text-primary-foreground/90 font-semibold">{stat.label}</div>
-                  <div className="text-xs text-primary-foreground/70 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300">{stat.description}</div>
+                  <div className="text-xs text-primary-foreground/70 leading-relaxed">{stat.description}</div>
                 </div>
               </Card>
             ))}
