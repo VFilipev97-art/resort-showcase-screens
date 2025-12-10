@@ -30,10 +30,11 @@ const GalleryStatsSection = () => {
   }, []);
 
   const stats = [
-    { number: "12", label: "уютных коттеджей" },
-    { number: "50+", label: "гектаров леса" },
-    { number: "24/7", label: "сервис и поддержка" },
-    { number: "100%", label: "экологичность" },
+    { number: "20", label: "гектаров уральской природы", description: "Пространство для качественного отдыха и чистая природа" },
+    { number: "200", label: "человек вместимость", description: "Номерной фонд для больших компаний" },
+    { number: "500", label: "м² для мероприятий", description: "Свадьбы, юбилеи, корпоративы, B2B мероприятия" },
+    { number: "5", label: "звёзд на Яндексе", description: "Средняя оценка наших гостей" },
+    { number: "365", label: "дней развлечений", description: "Активности на каждое время года" },
   ];
 
   const leftColumn = [
@@ -165,20 +166,21 @@ const GalleryStatsSection = () => {
             Цифры и факты
           </h3>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {stats.map((stat, index) => (
               <Card
                 key={index}
-                className={`p-8 text-center bg-gradient-to-br from-secondary to-accent border-none transform transition-all duration-700 hover:scale-105 hover:shadow-xl ${
+                className={`p-6 text-center bg-gradient-to-br from-secondary to-accent border-none transform transition-all duration-700 hover:scale-105 hover:shadow-xl group ${
                   isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                 }`}
                 style={{
                   transitionDelay: isVisible ? `${1000 + index * 100}ms` : "0ms",
                 }}
               >
-                <div className="space-y-3">
-                  <div className="text-5xl md:text-6xl font-bold text-primary-foreground">{stat.number}</div>
-                  <div className="text-sm md:text-base text-primary-foreground/90 font-medium">{stat.label}</div>
+                <div className="space-y-2">
+                  <div className="text-4xl md:text-5xl font-bold text-primary-foreground">{stat.number}</div>
+                  <div className="text-sm md:text-base text-primary-foreground/90 font-semibold">{stat.label}</div>
+                  <div className="text-xs text-primary-foreground/70 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300">{stat.description}</div>
                 </div>
               </Card>
             ))}
