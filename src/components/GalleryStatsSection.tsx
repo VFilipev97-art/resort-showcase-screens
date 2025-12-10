@@ -134,26 +134,6 @@ const GalleryStatsSection = () => {
           </div>
         </div>
 
-        {/* Info Section */}
-        <Card
-          className={`bg-card p-10 md:p-16 mb-16 border-border/50 transition-all duration-1000 hover:shadow-xl ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-          style={{ transitionDelay: isVisible ? "600ms" : "0ms" }}
-        >
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h3 className="text-3xl md:text-4xl font-serif text-primary mb-6">Погрузитесь в атмосферу уединения</h3>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Строгановские Просторы — это место, где вы сможете отдохнуть от городской суеты, насладиться тишиной
-              хвойного леса и величием Камского моря. Наши коттеджи оборудованы всем необходимым для комфортного
-              проживания, а территория базы предлагает множество активностей на любой вкус.
-            </p>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Мы создали пространство, где современный комфорт гармонично сочетается с природной красотой Пермского
-              края. Каждый элемент продуман для вашего максимального удобства и релаксации.
-            </p>
-          </div>
-        </Card>
 
         {/* Stats Grid */}
         <div>
