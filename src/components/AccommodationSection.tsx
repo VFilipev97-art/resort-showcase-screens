@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { X, ArrowUpRight, Users } from "lucide-react";
+import { X, Users } from "lucide-react";
 import cottageImage from "@/assets/cottage-exterior.jpg";
+import cottageInterior from "@/assets/cottage-interior.jpg";
 import modularImage from "@/assets/modular-house.jpg";
+import banyaImage from "@/assets/banya-exterior.jpg";
 
 type AccommodationType = "cottages" | "modular" | null;
 
@@ -14,8 +16,67 @@ interface AccommodationItem {
   capacityNum: number;
   area: number;
   priceFrom: number;
-  image?: string;
+  images: string[];
 }
+
+// Image carousel component with cursor position switching
+const ImageCarousel = ({ images }: { images: string[] }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current || images.length <= 1) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const sectionWidth = rect.width / images.length;
+    const newIndex = Math.min(Math.floor(x / sectionWidth), images.length - 1);
+    
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setActiveIndex(0);
+  };
+
+  return (
+    <div 
+      ref={containerRef}
+      className="relative w-full h-full"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {images.map((img, index) => (
+        <img
+          key={index}
+          src={img}
+          alt={`Фото ${index + 1}`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+            index === activeIndex ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      ))}
+      
+      {/* Indicators */}
+      {images.length > 1 && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+          {images.map((_, index) => (
+            <div
+              key={index}
+              className={`h-1 rounded-full transition-all duration-300 ${
+                index === activeIndex 
+                  ? 'w-4 bg-white' 
+                  : 'w-1.5 bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const AccommodationSection = () => {
   const [selectedType, setSelectedType] = useState<AccommodationType>(null);
@@ -31,7 +92,8 @@ const AccommodationSection = () => {
       capacity: "До 11 человек",
       capacityNum: 11,
       area: 120,
-      priceFrom: 10000
+      priceFrom: 10000,
+      images: [cottageImage, cottageInterior, banyaImage]
     },
     {
       name: "Дом Лесника",
@@ -39,7 +101,8 @@ const AccommodationSection = () => {
       capacity: "До 8 человек",
       capacityNum: 8,
       area: 95,
-      priceFrom: 8500
+      priceFrom: 8500,
+      images: [cottageImage, cottageInterior, banyaImage]
     },
     {
       name: "Дом Охотника",
@@ -47,7 +110,8 @@ const AccommodationSection = () => {
       capacity: "До 6 человек",
       capacityNum: 6,
       area: 75,
-      priceFrom: 6500
+      priceFrom: 6500,
+      images: [cottageImage, cottageInterior, banyaImage]
     }
   ];
 
@@ -58,7 +122,8 @@ const AccommodationSection = () => {
       capacity: "До 2 человек",
       capacityNum: 2,
       area: 25,
-      priceFrom: 4500
+      priceFrom: 4500,
+      images: [modularImage, cottageInterior, banyaImage]
     },
     {
       name: "Модуль Комфорт",
@@ -66,7 +131,8 @@ const AccommodationSection = () => {
       capacity: "До 4 человек",
       capacityNum: 4,
       area: 35,
-      priceFrom: 5500
+      priceFrom: 5500,
+      images: [modularImage, cottageInterior, banyaImage]
     },
     {
       name: "Модуль Премиум",
@@ -74,7 +140,8 @@ const AccommodationSection = () => {
       capacity: "До 4 человек",
       capacityNum: 4,
       area: 40,
-      priceFrom: 7500
+      priceFrom: 7500,
+      images: [modularImage, cottageInterior, banyaImage]
     }
   ];
 
@@ -265,17 +332,9 @@ const AccommodationSection = () => {
                           key={item.name}
                           className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-[#f5f2ed] border-0 rounded-2xl"
                         >
-                          {/* Image Section */}
+                          {/* Image Carousel Section */}
                           <div className="relative h-52 m-3 rounded-xl overflow-hidden">
-                            <img
-                              src={selectedType === "cottages" ? cottageImage : modularImage}
-                              alt={item.name}
-                              className="w-full h-full object-cover"
-                            />
-                            {/* Arrow button */}
-                            <button className="absolute bottom-3 right-3 w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary/90 transition-colors">
-                              <ArrowUpRight className="w-5 h-5 text-primary-foreground" />
-                            </button>
+                            <ImageCarousel images={item.images} />
                           </div>
                           
                           {/* Info Section */}
