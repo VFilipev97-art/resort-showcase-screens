@@ -54,6 +54,10 @@ export default {
         'forest-dark': 'hsl(165 70% 15%)',
         'forest': 'hsl(165 85% 30%)',
         'forest-light': 'hsl(165 75% 25%)',
+        'stats-card': {
+          DEFAULT: "hsl(var(--stats-card))",
+          foreground: "hsl(var(--stats-card-foreground))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

@@ -75,6 +75,10 @@ All colors MUST be HSL.
     --accent: 165 75% 25%;
     --accent-foreground: 0 0% 100%;
 
+    /* Stats card background - #005D4B */
+    --stats-card: 168 100% 18%;
+    --stats-card-foreground: 0 0% 100%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
