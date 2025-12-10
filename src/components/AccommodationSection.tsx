@@ -351,15 +351,18 @@ const AccommodationSection = () => {
                               </div>
                             </div>
                             
-                            {/* Description and Book Button Row */}
-                            <div className="flex items-end justify-between gap-4">
-                              <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                                {item.description}
-                              </p>
+                            {/* Description */}
+                            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                              {item.description}
+                            </p>
+                            
+                            {/* Button at bottom right */}
+                            <div className="flex justify-end">
                               <Button 
-                                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap"
+                                variant="outline"
+                                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-full px-5 py-2 text-sm font-medium"
                               >
-                                забронировать
+                                подробнее
                               </Button>
                             </div>
                           </div>
