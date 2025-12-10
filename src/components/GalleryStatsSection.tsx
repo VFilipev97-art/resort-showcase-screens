@@ -170,7 +170,7 @@ const GalleryStatsSection = () => {
             {stats.map((stat, index) => (
               <Card
                 key={index}
-                className={`p-6 text-center bg-gradient-to-br from-secondary to-accent border-none transform transition-all duration-700 hover:scale-105 hover:shadow-xl group ${
+                className={`p-6 text-center bg-stats-card border-none transform transition-all duration-700 hover:scale-105 hover:shadow-xl group ${
                   isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                 }`}
                 style={{
@@ -178,9 +178,9 @@ const GalleryStatsSection = () => {
                 }}
               >
                 <div className="space-y-2">
-                  <div className="text-4xl md:text-5xl font-bold text-primary-foreground">{stat.number}</div>
-                  <div className="text-sm md:text-base text-primary-foreground/90 font-semibold">{stat.label}</div>
-                  <div className="text-xs text-primary-foreground/70 leading-relaxed">{stat.description}</div>
+                  <div className="text-4xl md:text-5xl font-bold text-stats-card-foreground">{stat.number}</div>
+                  <div className="text-sm md:text-base text-stats-card-foreground/90 font-semibold">{stat.label}</div>
+                  <div className="text-xs text-stats-card-foreground/70 leading-relaxed">{stat.description}</div>
                 </div>
               </Card>
             ))}
