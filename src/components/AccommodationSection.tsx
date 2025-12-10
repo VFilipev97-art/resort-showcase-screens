@@ -1,10 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { X, ArrowUpRight, Users } from "lucide-react";
 import cottageImage from "@/assets/cottage-exterior.jpg";
 import modularImage from "@/assets/modular-house.jpg";
 
 type AccommodationType = "cottages" | "modular" | null;
+
+interface AccommodationItem {
+  name: string;
+  description: string;
+  capacity: string;
+  capacityNum: number;
+  area: number;
+  priceFrom: number;
+  image?: string;
+}
 
 const AccommodationSection = () => {
   const [selectedType, setSelectedType] = useState<AccommodationType>(null);
@@ -13,45 +24,57 @@ const AccommodationSection = () => {
   const cottageCardRef = useRef<HTMLDivElement>(null);
   const modularCardRef = useRef<HTMLDivElement>(null);
 
-  const cottages = [
+  const cottages: AccommodationItem[] = [
     {
-      name: "Коттедж Классик",
-      description: "Уютный деревянный коттедж с красной крышей, террасой и мангальной зоной. Идеально подходит для семейного отдыха.",
-      capacity: "До 6 человек",
-      features: ["Терраса", "Мангал", "2 спальни", "Кухня"]
+      name: "Дом Кузнеца",
+      description: "2 смежные и 2 изолированные спальни, просторная кухня-гостиная, санузел",
+      capacity: "До 11 человек",
+      capacityNum: 11,
+      area: 120,
+      priceFrom: 10000
     },
     {
-      name: "Коттедж Делюкс",
-      description: "Просторный коттедж премиум-класса с панорамными окнами и современными удобствами.",
+      name: "Дом Лесника",
+      description: "3 изолированные спальни, большая терраса с видом на лес, камин",
       capacity: "До 8 человек",
-      features: ["Камин", "Сауна", "3 спальни", "Кухня-гостиная"]
+      capacityNum: 8,
+      area: 95,
+      priceFrom: 8500
     },
     {
-      name: "Коттедж Уют",
-      description: "Компактный коттедж для небольшой компании с полным набором удобств.",
-      capacity: "До 4 человек",
-      features: ["Веранда", "Барбекю", "1 спальня", "Кухня"]
+      name: "Дом Охотника",
+      description: "2 спальни, уютная гостиная с камином, мангальная зона",
+      capacity: "До 6 человек",
+      capacityNum: 6,
+      area: 75,
+      priceFrom: 6500
     }
   ];
 
-  const modularHouses = [
+  const modularHouses: AccommodationItem[] = [
     {
-      name: "Модульный дом Стандарт",
-      description: "Современный модульный дом с панорамными окнами и стильным интерьером. Теплый и комфортный в любое время года.",
+      name: "Модуль Панорама",
+      description: "Панорамные окна с видом на реку, современный минималистичный интерьер",
       capacity: "До 2 человек",
-      features: ["Панорамные окна", "Отопление", "Душевая", "Мини-кухня"]
+      capacityNum: 2,
+      area: 25,
+      priceFrom: 4500
     },
     {
-      name: "Модульный дом Комфорт",
-      description: "Увеличенный модульный дом с дополнительной спальной зоной.",
+      name: "Модуль Комфорт",
+      description: "Увеличенная площадь, дополнительная спальная зона, терраса",
       capacity: "До 4 человек",
-      features: ["Терраса", "Отопление", "Душ", "Кухонная зона"]
+      capacityNum: 4,
+      area: 35,
+      priceFrom: 5500
     },
     {
-      name: "Модульный дом Премиум",
-      description: "Модульный дом премиум-класса с максимальным комфортом.",
+      name: "Модуль Премиум",
+      description: "Максимальный комфорт, джакузи, камин, панорамный вид на лес",
       capacity: "До 4 человек",
-      features: ["Джакузи", "Камин", "Кухня", "Панорамный вид"]
+      capacityNum: 4,
+      area: 40,
+      priceFrom: 7500
     }
   ];
 
@@ -240,33 +263,45 @@ const AccommodationSection = () => {
                       {(selectedType === "cottages" ? cottages : modularHouses).map((item) => (
                         <Card 
                           key={item.name}
-                          className="overflow-hidden hover:shadow-xl transition-all duration-300"
+                          className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-[#f5f2ed] border-0 rounded-2xl"
                         >
-                          <div className="relative h-48">
+                          {/* Image Section */}
+                          <div className="relative h-52 m-3 rounded-xl overflow-hidden">
                             <img
                               src={selectedType === "cottages" ? cottageImage : modularImage}
                               alt={item.name}
                               className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                            <div className="absolute bottom-4 left-4">
-                              <h4 className="text-xl font-semibold text-white">{item.name}</h4>
-                            </div>
+                            {/* Arrow button */}
+                            <button className="absolute bottom-3 right-3 w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary/90 transition-colors">
+                              <ArrowUpRight className="w-5 h-5 text-primary-foreground" />
+                            </button>
                           </div>
-                          <div className="p-6">
-                            <p className="text-muted-foreground mb-4">{item.description}</p>
-                            <div className="mb-4">
-                              <span className="text-sm font-semibold text-primary">{item.capacity}</span>
+                          
+                          {/* Info Section */}
+                          <div className="px-4 pb-4">
+                            {/* Title, Price, Capacity Row */}
+                            <div className="flex items-center justify-between gap-2 mb-3">
+                              <h4 className="text-lg font-semibold text-foreground">{item.name}</h4>
+                              <div className="flex items-center gap-3 text-sm">
+                                <span className="font-medium text-foreground">₽ {item.priceFrom.toLocaleString()}</span>
+                                <div className="flex items-center gap-1 text-muted-foreground">
+                                  <Users className="w-4 h-4" />
+                                  <span>до {item.capacityNum} чел</span>
+                                </div>
+                              </div>
                             </div>
-                            <div className="flex flex-wrap gap-2">
-                              {item.features.map((feature) => (
-                                <span 
-                                  key={feature}
-                                  className="px-3 py-1 bg-secondary/50 text-secondary-foreground text-xs rounded-full"
-                                >
-                                  {feature}
-                                </span>
-                              ))}
+                            
+                            {/* Description and Book Button Row */}
+                            <div className="flex items-end justify-between gap-4">
+                              <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                                {item.description}
+                              </p>
+                              <Button 
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap"
+                              >
+                                забронировать
+                              </Button>
                             </div>
                           </div>
                         </Card>
