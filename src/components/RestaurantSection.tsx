@@ -1,6 +1,71 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { UtensilsCrossed, Coffee, Sun, Moon } from "lucide-react";
+import { Coffee, Sun, Moon } from "lucide-react";
+
+// Placeholder images for restaurant - replace with real images
+const restaurantImages = [
+  "/placeholder.svg",
+  "/placeholder.svg",
+  "/placeholder.svg",
+];
+
+const ImageCarousel = ({ images }: { images: string[] }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current || images.length <= 1) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const sectionWidth = rect.width / images.length;
+    const newIndex = Math.min(Math.floor(x / sectionWidth), images.length - 1);
+    
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setActiveIndex(0);
+  };
+
+  return (
+    <div 
+      ref={containerRef}
+      className="relative w-full h-full cursor-pointer"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {images.map((img, index) => (
+        <img
+          key={index}
+          src={img}
+          alt={`Интерьер ресторана ${index + 1}`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+            index === activeIndex ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      ))}
+      
+      {/* Indicators */}
+      {images.length > 1 && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+          {images.map((_, index) => (
+            <div
+              key={index}
+              className={`h-1 rounded-full transition-all duration-300 ${
+                index === activeIndex 
+                  ? 'w-4 bg-white' 
+                  : 'w-1.5 bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const mealTypes = [
   {
@@ -76,28 +141,10 @@ const RestaurantSection = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
-          {/* Photo Section */}
-          <div className="space-y-4">
-            {/* Main Photo */}
-            <div className="relative overflow-hidden rounded-2xl">
-              <div className="aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <UtensilsCrossed className="w-16 h-16 text-primary/40 mx-auto mb-4" />
-                  <p className="text-primary/60 text-sm">Фото интерьера ресторана</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Mini Gallery */}
-            <div className="grid grid-cols-3 gap-3">
-              {["Утренний зал", "Обеденный зал", "Вечерняя атмосфера"].map((label, index) => (
-                <div
-                  key={index}
-                  className="relative overflow-hidden rounded-xl aspect-square bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center group cursor-pointer hover:scale-[1.02] transition-transform duration-300"
-                >
-                  <p className="text-primary/50 text-xs text-center px-2">{label}</p>
-                </div>
-              ))}
+          {/* Photo Section with Carousel */}
+          <div className="relative overflow-hidden rounded-2xl">
+            <div className="aspect-[4/3]">
+              <ImageCarousel images={restaurantImages} />
             </div>
           </div>
 
