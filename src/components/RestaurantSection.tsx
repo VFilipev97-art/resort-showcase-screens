@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Coffee, Sun, Moon } from "lucide-react";
+import MenuModal from "./MenuModal";
 
 // Placeholder images for restaurant - replace with real images
 const restaurantImages = [
@@ -95,6 +96,7 @@ const benefits = [
 const RestaurantSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [activeMeal, setActiveMeal] = useState<number | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -199,6 +201,7 @@ const RestaurantSection = () => {
               <Button 
                 size="lg" 
                 className="rounded-xl px-8"
+                onClick={() => setIsMenuOpen(true)}
               >
                 Посмотреть меню
               </Button>
@@ -213,6 +216,9 @@ const RestaurantSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Menu Modal */}
+      <MenuModal isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </section>
   );
 };
