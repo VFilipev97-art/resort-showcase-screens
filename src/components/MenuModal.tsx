@@ -72,48 +72,6 @@ const menuCategories = [
   },
 ];
 
-// Decorative SVG components
-const BranchDecoration = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path 
-      d="M100 280 C100 280, 100 150, 100 80 M100 200 C100 200, 60 180, 40 160 M100 160 C100 160, 140 140, 160 120 M100 120 C100 120, 70 100, 50 80 M100 80 C100 80, 130 60, 150 40 M40 160 C40 160, 30 140, 35 120 M160 120 C160 120, 170 100, 165 80 M50 80 C50 80, 40 60, 45 40 M150 40 C150 40, 160 20, 155 5" 
-      stroke="currentColor" 
-      strokeWidth="1.5" 
-      strokeLinecap="round"
-      fill="none"
-    />
-    <circle cx="35" cy="120" r="4" fill="currentColor" opacity="0.6"/>
-    <circle cx="165" cy="80" r="3" fill="currentColor" opacity="0.5"/>
-    <circle cx="45" cy="40" r="5" fill="currentColor" opacity="0.4"/>
-    <circle cx="155" cy="5" r="3" fill="currentColor" opacity="0.6"/>
-    <circle cx="100" cy="80" r="4" fill="currentColor" opacity="0.5"/>
-  </svg>
-);
-
-const LeafDecoration = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 100 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path 
-      d="M50 140 C50 140, 50 80, 50 20 M50 100 C50 100, 30 90, 20 70 M50 70 C50 70, 70 60, 80 40 M50 40 C50 40, 35 30, 25 15" 
-      stroke="currentColor" 
-      strokeWidth="1.2" 
-      strokeLinecap="round"
-    />
-    <ellipse cx="20" cy="70" rx="12" ry="8" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.7"/>
-    <ellipse cx="80" cy="40" rx="10" ry="6" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.6"/>
-    <ellipse cx="25" cy="15" rx="8" ry="5" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5"/>
-  </svg>
-);
-
-const PlateDecoration = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="60" cy="50" rx="50" ry="20" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-    <ellipse cx="60" cy="45" rx="35" ry="12" stroke="currentColor" strokeWidth="1" opacity="0.6" fill="none"/>
-    <path d="M30 30 C30 30, 40 20, 60 20 C80 20, 90 30, 90 30" stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.4"/>
-    <circle cx="60" cy="35" r="2" fill="currentColor" opacity="0.5"/>
-    <circle cx="50" cy="40" r="1.5" fill="currentColor" opacity="0.4"/>
-    <circle cx="70" cy="38" r="1.5" fill="currentColor" opacity="0.4"/>
-  </svg>
-);
 
 const MenuModal = ({ isOpen, onClose }: MenuModalProps) => {
   const [activeCategory, setActiveCategory] = useState("starters");
@@ -161,10 +119,6 @@ const MenuModal = ({ isOpen, onClose }: MenuModalProps) => {
           isAnimating && isOpen ? "translate-y-0" : "translate-y-full"
         )}
       >
-        {/* Decorative elements */}
-        <BranchDecoration className="absolute top-20 right-8 w-32 h-48 text-primary/20 hidden lg:block" />
-        <LeafDecoration className="absolute bottom-20 left-8 w-24 h-36 text-primary/15 hidden lg:block" />
-        <PlateDecoration className="absolute top-1/2 right-12 w-32 h-20 text-primary/10 hidden xl:block" />
         
         {/* Header */}
         <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-md border-b border-border/50">
@@ -228,20 +182,6 @@ const MenuModal = ({ isOpen, onClose }: MenuModalProps) => {
                       </div>
                     </div>
                     
-                    {/* Decorative line art under image */}
-                    <div className="mt-6 hidden lg:block">
-                      <svg className="w-full h-16 text-primary/30" viewBox="0 0 300 60" fill="none">
-                        <path 
-                          d="M0 30 Q75 10, 150 30 T300 30" 
-                          stroke="currentColor" 
-                          strokeWidth="1"
-                          fill="none"
-                        />
-                        <circle cx="75" cy="20" r="3" fill="currentColor" opacity="0.5"/>
-                        <circle cx="150" cy="30" r="4" fill="currentColor" opacity="0.6"/>
-                        <circle cx="225" cy="20" r="3" fill="currentColor" opacity="0.5"/>
-                      </svg>
-                    </div>
                   </div>
                 </div>
 
