@@ -383,7 +383,7 @@ const EventCalculator = () => {
 
   // Form state
   const [guestCount, setGuestCount] = useState(50);
-  const [eventDate, setEventDate] = useState("");
+  const [eventDate, setEventDate] = useState<Date | undefined>();
   const [catering, setCatering] = useState<string>("premium");
   const [entertainment, setEntertainment] = useState<string[]>([]);
   const [additional, setAdditional] = useState<string[]>([]);
@@ -605,16 +605,34 @@ const EventCalculator = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="date" className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-primary" />
+                  <Label className="flex items-center gap-2">
+                    <CalendarIcon className="w-4 h-4 text-primary" />
                     Дата мероприятия
                   </Label>
-                  <Input 
-                    id="date"
-                    type="date"
-                    value={eventDate}
-                    onChange={(e) => setEventDate(e.target.value)}
-                  />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !eventDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {eventDate ? format(eventDate, "d MMMM yyyy", { locale: ru }) : "Выберите дату"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 bg-background z-50" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={eventDate}
+                        onSelect={setEventDate}
+                        initialFocus
+                        disabled={(date) => date < new Date()}
+                        className="pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
             </div>
