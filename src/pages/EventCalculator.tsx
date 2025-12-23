@@ -4,9 +4,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Phone, ArrowLeft, Users, Calendar, MapPin, Utensils, Music, Sparkles, Send, RotateCcw } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Phone, ArrowLeft, Users, Calendar as CalendarIcon, MapPin, Utensils, Music, Sparkles, Send, RotateCcw, Home, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { format, differenceInDays } from "date-fns";
+import { ru } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
+import cottageImage from "@/assets/cottage-exterior.jpg";
+import cottageInterior from "@/assets/cottage-interior.jpg";
+import modularImage from "@/assets/modular-house.jpg";
+import banyaImage from "@/assets/banya-exterior.jpg";
 
 // Event types data
 const eventTypes = [
@@ -36,6 +47,77 @@ const eventTypes = [
   },
 ];
 
+// Accommodation data
+interface AccommodationItem {
+  id: string;
+  name: string;
+  description: string;
+  capacityNum: number;
+  area: number;
+  pricePerNight: number;
+  images: string[];
+}
+
+const cottages: AccommodationItem[] = [
+  {
+    id: "cottage-1",
+    name: "Дом Кузнеца",
+    description: "2 смежные и 2 изолированные спальни, просторная кухня-гостиная",
+    capacityNum: 11,
+    area: 120,
+    pricePerNight: 10000,
+    images: [cottageImage, cottageInterior, banyaImage]
+  },
+  {
+    id: "cottage-2",
+    name: "Дом Лесника",
+    description: "3 изолированные спальни, большая терраса с видом на лес",
+    capacityNum: 8,
+    area: 95,
+    pricePerNight: 8500,
+    images: [cottageImage, cottageInterior, banyaImage]
+  },
+  {
+    id: "cottage-3",
+    name: "Дом Охотника",
+    description: "2 спальни, уютная гостиная с камином, мангальная зона",
+    capacityNum: 6,
+    area: 75,
+    pricePerNight: 6500,
+    images: [cottageImage, cottageInterior, banyaImage]
+  }
+];
+
+const modularHouses: AccommodationItem[] = [
+  {
+    id: "modular-1",
+    name: "Модуль Панорама",
+    description: "Панорамные окна с видом на реку, современный интерьер",
+    capacityNum: 2,
+    area: 25,
+    pricePerNight: 4500,
+    images: [modularImage, cottageInterior, banyaImage]
+  },
+  {
+    id: "modular-2",
+    name: "Модуль Комфорт",
+    description: "Увеличенная площадь, дополнительная спальная зона",
+    capacityNum: 4,
+    area: 35,
+    pricePerNight: 5500,
+    images: [modularImage, cottageInterior, banyaImage]
+  },
+  {
+    id: "modular-3",
+    name: "Модуль Премиум",
+    description: "Максимальный комфорт, джакузи, камин",
+    capacityNum: 4,
+    area: 40,
+    pricePerNight: 7500,
+    images: [modularImage, cottageInterior, banyaImage]
+  }
+];
+
 // Pricing data
 const pricing = {
   venueBase: 25000,
@@ -57,7 +139,6 @@ const pricing = {
     flowers: { name: "Цветочные композиции", price: 12000 },
     fireworks: { name: "Салют и пиротехника", price: 25000 },
     transfer: { name: "Трансфер гостей", price: 8000 },
-    accommodation: { name: "Проживание гостей (за дом)", price: 6000 },
   },
 };
 
@@ -152,6 +233,147 @@ const FlipCard = ({
   );
 };
 
+// Photo Slider Modal Component
+const PhotoSliderModal = ({ 
+  images, 
+  isOpen, 
+  onClose, 
+  houseName 
+}: { 
+  images: string[]; 
+  isOpen: boolean; 
+  onClose: () => void; 
+  houseName: string;
+}) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const goNext = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+  const goPrev = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+
+  useEffect(() => {
+    if (!isOpen) setCurrentIndex(0);
+  }, [isOpen]);
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background">
+        <div className="relative">
+          <img 
+            src={images[currentIndex]} 
+            alt={`${houseName} - фото ${currentIndex + 1}`}
+            className="w-full h-[60vh] object-cover"
+          />
+          
+          {/* Navigation */}
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={goPrev}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/80 flex items-center justify-center hover:bg-background transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={goNext}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/80 flex items-center justify-center hover:bg-background transition-colors"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </>
+          )}
+          
+          {/* Indicators */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={cn(
+                  "w-2 h-2 rounded-full transition-all",
+                  index === currentIndex ? "bg-primary w-6" : "bg-primary/40"
+                )}
+              />
+            ))}
+          </div>
+        </div>
+        
+        <div className="p-4 text-center">
+          <h3 className="font-medium text-foreground">{houseName}</h3>
+          <p className="text-sm text-muted-foreground">Фото {currentIndex + 1} из {images.length}</p>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+// Compact House Card Component
+const HouseCard = ({ 
+  house, 
+  isSelected, 
+  onToggle,
+  onPhotoClick 
+}: { 
+  house: AccommodationItem; 
+  isSelected: boolean; 
+  onToggle: () => void;
+  onPhotoClick: () => void;
+}) => {
+  return (
+    <div 
+      className={cn(
+        "flex gap-4 p-3 rounded-xl border-2 transition-all duration-300 cursor-pointer",
+        isSelected ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+      )}
+      onClick={onToggle}
+    >
+      {/* Photo thumbnail */}
+      <div 
+        className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-zoom-in"
+        onClick={(e) => {
+          e.stopPropagation();
+          onPhotoClick();
+        }}
+      >
+        <img 
+          src={house.images[0]} 
+          alt={house.name}
+          className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+        />
+        {house.images.length > 1 && (
+          <div className="absolute bottom-1 right-1 bg-background/80 rounded px-1.5 py-0.5 text-xs">
+            +{house.images.length - 1}
+          </div>
+        )}
+      </div>
+      
+      {/* Info */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-start justify-between gap-2">
+          <h4 className="font-medium text-foreground truncate">{house.name}</h4>
+          <Checkbox 
+            checked={isSelected}
+            onCheckedChange={onToggle}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+        
+        {/* Capacity - main focus */}
+        <div className="flex items-center gap-1.5 mt-1 text-primary font-medium">
+          <Users className="w-4 h-4" />
+          <span>до {house.capacityNum} чел</span>
+        </div>
+        
+        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{house.description}</p>
+        
+        <div className="flex items-center justify-between mt-2">
+          <span className="text-sm font-medium text-foreground">{house.pricePerNight.toLocaleString()} ₽/сутки</span>
+          <span className="text-xs text-muted-foreground">{house.area} м²</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const EventCalculator = () => {
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
   const [flippedCard, setFlippedCard] = useState<string | null>(null);
@@ -168,6 +390,17 @@ const EventCalculator = () => {
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [contactEmail, setContactEmail] = useState("");
+  
+  // Accommodation state
+  const [checkInDate, setCheckInDate] = useState<Date | undefined>();
+  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>();
+  const [selectedHouses, setSelectedHouses] = useState<string[]>([]);
+  const [photoModalOpen, setPhotoModalOpen] = useState(false);
+  const [activeHousePhotos, setActiveHousePhotos] = useState<{ images: string[]; name: string } | null>(null);
+
+  const nightsCount = checkInDate && checkOutDate 
+    ? Math.max(0, differenceInDays(checkOutDate, checkInDate))
+    : 0;
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -203,6 +436,26 @@ const EventCalculator = () => {
     );
   };
 
+  const toggleHouse = (id: string) => {
+    setSelectedHouses(prev => 
+      prev.includes(id) ? prev.filter(h => h !== id) : [...prev, id]
+    );
+  };
+
+  const openPhotoModal = (house: AccommodationItem) => {
+    setActiveHousePhotos({ images: house.images, name: house.name });
+    setPhotoModalOpen(true);
+  };
+
+  // Calculate accommodation total
+  const calculateAccommodationTotal = () => {
+    const allHouses = [...cottages, ...modularHouses];
+    return selectedHouses.reduce((sum, houseId) => {
+      const house = allHouses.find(h => h.id === houseId);
+      return sum + (house ? house.pricePerNight * nightsCount : 0);
+    }, 0);
+  };
+
   // Calculate total
   const calculateTotal = () => {
     let total = pricing.venueBase;
@@ -223,6 +476,9 @@ const EventCalculator = () => {
         total += pricing.additional[id as keyof typeof pricing.additional].price;
       }
     });
+
+    // Add accommodation
+    total += calculateAccommodationTotal();
     
     return total;
   };
@@ -389,11 +645,147 @@ const EventCalculator = () => {
               </div>
             </div>
 
-            {/* Section 3: Catering */}
+            {/* Section 3: Accommodation */}
             <div className="space-y-6 pt-6 border-t border-border">
               <div className="flex items-center gap-3 text-primary">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                   <span className="font-medium">3</span>
+                </div>
+                <h3 className="text-xl font-light">Размещение гостей</h3>
+              </div>
+
+              {/* Date Pickers */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2">
+                    <CalendarIcon className="w-4 h-4 text-primary" />
+                    Дата заезда
+                  </Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !checkInDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {checkInDate ? format(checkInDate, "d MMMM yyyy", { locale: ru }) : "Выберите дату"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 bg-background z-50" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={checkInDate}
+                        onSelect={setCheckInDate}
+                        initialFocus
+                        disabled={(date) => date < new Date()}
+                        className="pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2">
+                    <CalendarIcon className="w-4 h-4 text-primary" />
+                    Дата выезда
+                  </Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !checkOutDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {checkOutDate ? format(checkOutDate, "d MMMM yyyy", { locale: ru }) : "Выберите дату"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 bg-background z-50" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={checkOutDate}
+                        onSelect={setCheckOutDate}
+                        initialFocus
+                        disabled={(date) => date < (checkInDate || new Date())}
+                        className="pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+
+              {/* Nights count */}
+              {nightsCount > 0 && (
+                <div className="text-center py-2 px-4 bg-primary/10 rounded-lg">
+                  <span className="text-primary font-medium">
+                    Количество ночей: {nightsCount}
+                  </span>
+                </div>
+              )}
+
+              {/* Tabs for house types */}
+              <Tabs defaultValue="cottages" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="cottages" className="flex items-center gap-2">
+                    <Home className="w-4 h-4" />
+                    Коттеджи
+                  </TabsTrigger>
+                  <TabsTrigger value="modular" className="flex items-center gap-2">
+                    <Home className="w-4 h-4" />
+                    Модульные
+                  </TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="cottages" className="mt-4 space-y-3">
+                  {cottages.map((house) => (
+                    <HouseCard
+                      key={house.id}
+                      house={house}
+                      isSelected={selectedHouses.includes(house.id)}
+                      onToggle={() => toggleHouse(house.id)}
+                      onPhotoClick={() => openPhotoModal(house)}
+                    />
+                  ))}
+                </TabsContent>
+                
+                <TabsContent value="modular" className="mt-4 space-y-3">
+                  {modularHouses.map((house) => (
+                    <HouseCard
+                      key={house.id}
+                      house={house}
+                      isSelected={selectedHouses.includes(house.id)}
+                      onToggle={() => toggleHouse(house.id)}
+                      onPhotoClick={() => openPhotoModal(house)}
+                    />
+                  ))}
+                </TabsContent>
+              </Tabs>
+
+              {/* Accommodation summary */}
+              {selectedHouses.length > 0 && nightsCount > 0 && (
+                <div className="bg-primary/5 rounded-xl p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Выбрано домов:</span>
+                    <span className="font-medium text-foreground">{selectedHouses.length}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Стоимость размещения:</span>
+                    <span className="font-medium text-primary">{formatPrice(calculateAccommodationTotal())} ₽</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Section 4: Catering */}
+            <div className="space-y-6 pt-6 border-t border-border">
+              <div className="flex items-center gap-3 text-primary">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="font-medium">4</span>
                 </div>
                 <h3 className="text-xl font-light">Кейтеринг и развлечения</h3>
               </div>
@@ -447,11 +839,11 @@ const EventCalculator = () => {
               </div>
             </div>
 
-            {/* Section 4: Additional Services */}
+            {/* Section 5: Additional Services */}
             <div className="space-y-6 pt-6 border-t border-border">
               <div className="flex items-center gap-3 text-primary">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="font-medium">4</span>
+                  <span className="font-medium">5</span>
                 </div>
                 <h3 className="text-xl font-light">Дополнительные услуги</h3>
               </div>
@@ -476,11 +868,11 @@ const EventCalculator = () => {
               </div>
             </div>
 
-            {/* Section 5: Total and Contact */}
+            {/* Section 6: Total and Contact */}
             <div className="space-y-6 pt-6 border-t border-border">
               <div className="flex items-center gap-3 text-primary">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="font-medium">5</span>
+                  <span className="font-medium">6</span>
                 </div>
                 <h3 className="text-xl font-light">Итог и заявка</h3>
               </div>
@@ -545,6 +937,19 @@ const EventCalculator = () => {
           </div>
         </div>
       </section>
+
+      {/* Photo Slider Modal */}
+      {activeHousePhotos && (
+        <PhotoSliderModal
+          images={activeHousePhotos.images}
+          houseName={activeHousePhotos.name}
+          isOpen={photoModalOpen}
+          onClose={() => {
+            setPhotoModalOpen(false);
+            setActiveHousePhotos(null);
+          }}
+        />
+      )}
 
       {/* Footer */}
       <footer className="bg-primary py-8 px-6">
