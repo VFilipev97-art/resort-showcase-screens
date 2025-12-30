@@ -1,9 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Phone } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-cottages.jpg";
-import logo from "@/assets/logo.png";
+import HeroNav from "./HeroNav";
 
 const HeroSection = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -28,37 +25,7 @@ const HeroSection = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="absolute top-0 left-0 right-0 z-20 p-6 md:p-8 animate-fade-in">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-8">
-            <img 
-              src={logo} 
-              alt="Строгановские Просторы" 
-              className="h-12 md:h-16 hover:scale-105 transition-transform duration-300" 
-            />
-            <a href="#" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px]">
-              дома
-            </a>
-            <Link to="/services" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px]">
-              услуги
-            </Link>
-            <Link to="/quadtours" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px]">
-              квадротуры
-            </Link>
-            <a href="#" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px]">
-              как добраться
-            </a>
-          </div>
-          <div className="flex items-center gap-4">
-            <a href="tel:+79991234567" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:scale-110">
-              <Phone className="w-5 h-5" />
-            </a>
-            <Button variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary transition-all duration-300 hover:scale-105">
-              забронировать
-            </Button>
-          </div>
-        </div>
-      </nav>
+      <HeroNav />
 
       {/* Content */}
       <div className="absolute bottom-0 left-0 right-0 z-10 pb-12 md:pb-16">

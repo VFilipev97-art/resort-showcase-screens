@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Phone, ChevronLeft, ChevronRight } from "lucide-react";
-import logo from "@/assets/logo.png";
+import HeroNav from "@/components/HeroNav";
 
 const heroSlides = [
   {
@@ -125,36 +124,7 @@ const Services = () => {
         ))}
 
         {/* Navigation */}
-        <nav className="absolute top-0 left-0 right-0 z-20 p-6 md:p-8">
-          <div className="container mx-auto flex justify-between items-center">
-            <div className="flex items-center gap-8">
-              <Link to="/">
-                <img
-                  src={logo}
-                  alt="Строгановские Просторы"
-                  className="h-12 md:h-16 hover:scale-105 transition-transform duration-300"
-                />
-              </Link>
-              <Link to="/" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300">
-                дома
-              </Link>
-              <Link to="/services" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 border-b border-primary-foreground">
-                услуги
-              </Link>
-              <Link to="/quadtours" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300">
-                квадротуры
-              </Link>
-            </div>
-            <div className="flex items-center gap-4">
-              <a href="tel:+79991234567" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300">
-                <Phone className="w-5 h-5" />
-              </a>
-              <Button variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-                забронировать
-              </Button>
-            </div>
-          </div>
-        </nav>
+        <HeroNav />
 
         {/* Slide Content */}
         <div className="absolute bottom-24 left-0 right-0 z-10">
