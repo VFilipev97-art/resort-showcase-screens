@@ -39,9 +39,9 @@ const HeroSection = () => {
             <a href="#" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px]">
               дома
             </a>
-            <a href="#" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px]">
+            <Link to="/services" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px]">
               услуги
-            </a>
+            </Link>
             <Link to="/quadtours" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px]">
               квадротуры
             </Link>
