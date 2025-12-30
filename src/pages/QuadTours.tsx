@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Phone, ArrowLeft, Clock, MapPin, Users, ChevronDown, X, Check } from "lucide-react";
 import { Link } from "react-router-dom";
-import logo from "@/assets/logo.png";
+import { Button } from "@/components/ui/button";
+import { Clock, MapPin, Users, ChevronDown, X, Check, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
+import HeroNav from "@/components/HeroNav";
+import logo from "@/assets/logo.png";
 
 // Tour data
 const tours = [
@@ -125,7 +126,6 @@ const QuadTours = () => {
     } else {
       setSelectedTour(tourId);
       setIsDetailAnimating(true);
-      // Scroll to detail section
       setTimeout(() => {
         document.getElementById("tour-detail")?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 100);
@@ -150,31 +150,7 @@ const QuadTours = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="absolute top-0 left-0 right-0 z-20 p-6 md:p-8">
-          <div className="container mx-auto flex justify-between items-center">
-            <div className="flex items-center gap-8">
-              <Link to="/">
-                <img 
-                  src={logo} 
-                  alt="Строгановские Просторы" 
-                  className="h-12 md:h-16 hover:scale-105 transition-transform duration-300" 
-                />
-              </Link>
-              <Link to="/" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px] flex items-center gap-2">
-                <ArrowLeft className="w-4 h-4" />
-                на главную
-              </Link>
-            </div>
-            <div className="flex items-center gap-4">
-              <a href="tel:+79991234567" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:scale-110">
-                <Phone className="w-5 h-5" />
-              </a>
-              <Button variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary transition-all duration-300 hover:scale-105">
-                записаться
-              </Button>
-            </div>
-          </div>
-        </nav>
+        <HeroNav />
 
         {/* Hero Content */}
         <div className="relative z-10 container mx-auto px-6 text-center">
