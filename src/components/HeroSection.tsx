@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-cottages.jpg";
 import logo from "@/assets/logo.png";
 
@@ -41,6 +42,9 @@ const HeroSection = () => {
             <a href="#" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px]">
               услуги
             </a>
+            <Link to="/quadtours" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px]">
+              квадротуры
+            </Link>
             <a href="#" className="text-primary-foreground hover:text-primary-foreground/80 transition-all duration-300 hover:translate-y-[-2px]">
               как добраться
             </a>
